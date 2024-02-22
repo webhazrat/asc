@@ -7,10 +7,12 @@ export default function Page({ params }) {
       <HeaderNavigation />
       <div className="container py-10">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Students of {params.year}</h2>
+          <h2 className="text-xl font-semibold">
+            ব্যাচ {params.year} এর শিক্ষার্থী
+          </h2>
           <Input
             type="search"
-            placeholder="Search keyword..."
+            placeholder="শিক্ষার্থী সার্চ করুন"
             className="max-w-64"
           />
         </div>

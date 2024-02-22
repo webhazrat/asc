@@ -1,73 +1,27 @@
-import Image from "next/image";
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 export default function Hero() {
   return (
-    <div className="container bg-hero-pattern bg-contain bg-center grid grid-cols-2 py-20 items-center relative rounded-2xl z-10">
+    <div className="container bg-hero-pattern bg-cover bg-center py-20 relative z-10 overflow-hidden md:overflow-visible">
       <div className="absolute top-0 left-0 overflow-hidden blur-3xl h-96 w-[36.125rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 -z-10"></div>
-      <div className="absolute bottom-0 right-0 overflow-hidden blur-3xl h-96 w-[36.125rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 -z-10"></div>
-      <div className="space-y-5">
-        <h1 className="text-5xl font-bold">
-          Let’s build our community strength with student education power
+      <div className="hidden lg:block absolute bottom-0 right-0 overflow-hidden blur-3xl h-96 w-[36.125rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-20 -z-10"></div>
+      <div className="space-y-5 max-w-xl m-auto text-center">
+        <h1 className="text-4xl lg:text-5xl font-bold">
+          স্কুল ছাড়লেও, বন্ধুত্বের বন্ধনে হৃদয়ের টানে একত্রিত
         </h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur. Molestie nec vel ut purus
-          auctor vitae nulla. Venenatis sollicitudin mauris egestas quis mi elit
-          posuere. Varius orci duis gravida in purus ultrices. Cursus morbi nibh
-          ante viverra est sit.
+          বয়সের গন্ডী নেই, বন্ধুত্বের বন্ধন চিরকাল । স্কুল ছাড়লেও শেখা থামে
+          না! আড্ডা, আনন্দ, পুনর্মিলন, ক্রিড়া, শিক্ষা ও বন্ধুত্বের মাধ্যমে
+          সম্প্রদায়কে এগিয়ে নেওয়ার অঙ্গীকার।
         </p>
-        <div className="flex gap-2">
-          <Button>Let's Join</Button>
-          <Button variant="link">View Students</Button>
-        </div>
-      </div>
-      <div className="grid grid-cols-3 items-center gap-5 relative pl-10">
-        <div>
-          <Image
-            src={
-              "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=400&w=300&q=80"
-            }
-            width={200}
-            height={400}
-            className="rounded-lg shadow-md"
-          />
-        </div>
-        <div className="space-y-5">
-          <Image
-            src={
-              "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=400&w=280&q=80"
-            }
-            width={200}
-            height={400}
-            className="rounded-lg shadow-md"
-          />
-
-          <Image
-            src={
-              "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=400&w=300&q=80"
-            }
-            width={200}
-            height={400}
-            className="rounded-lg shadow-md"
-          />
-        </div>
-        <div className="space-y-5 relative -top-14">
-          <Image
-            src={
-              "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=400&w=300&q=80"
-            }
-            width={200}
-            height={400}
-            className="rounded-lg shadow-md"
-          />
-          <Image
-            src={
-              "https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&h=400&w=300&q=80"
-            }
-            width={200}
-            height={400}
-            className="rounded-lg shadow-md"
-          />
+        <div className="flex items-center justify-center gap-2">
+          <Button asChild>
+            <Link href={"/join"}>জয়েন করুন</Link>
+          </Button>
+          <Button variant="link">
+            <Link href={"/batches"}>ব্যাচসমূহ দেখুন</Link>
+          </Button>
         </div>
       </div>
     </div>

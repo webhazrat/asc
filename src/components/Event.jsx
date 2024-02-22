@@ -1,64 +1,73 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { Calendar, MapPin, Plus } from "lucide-react";
+import { Banknote, Calendar, MapPin, Plus } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import event from "../../public/iftar-2023.jpg";
 
 export default function Event() {
   return (
-    <div className="container py-8">
-      <div className="grid grid-cols-2 items-center p-10 gap-10 relative border border-gray-100 rounded-2xl backdrop-filter backdrop-blur-lg">
+    <div className="container py-10">
+      <h2 className="text-2xl font-bold mb-4 text-center">সর্বশেষ ইভেন্ট</h2>
+      <div className="grid md:grid-cols-2 items-center p-6 md:p-8 gap-10 relative border border-muted rounded-2xl backdrop-filter backdrop-blur-lg">
         <div className="relative">
           <Image
-            src={
-              "https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?fit=crop&w=500&q=80"
-            }
-            width={600}
-            height={500}
+            src={event}
             alt="about"
-            className="rounded-xl shadow-md"
+            className="rounded-xl shadow-md h-80 object-cover"
           />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2  -translate-y-1/2 flex items-center backdrop-filter backdrop-blur-sm bg-white/60 rounded-lg">
-            <ul className="grid grid-cols-3 divide-x-[1px] divide-gray-50/30">
-              <li className="p-5">
-                40 <div>Days</div>
+          <div className="absolute bottom-2 left-2 backdrop-filter backdrop-blur-sm bg-white/70 rounded-lg">
+            <ul className="flex divide-x-[1px] divide-gray-50/30">
+              <li className="py-2 px-5">
+                44 <div>দিন</div>
               </li>
-              <li className="p-5">
-                20 <div>Hours</div>
+              <li className="py-2 px-5">
+                20 <div>ঘন্টা</div>
               </li>
-              <li className="p-5">
-                30 <div>Minutes</div>
+              <li className="py-2 px-5">
+                30 <div>মিনিট</div>
               </li>
             </ul>
           </div>
         </div>
-        <div className="space-y-5">
-          <h2 className="text-3xl font-bold">
-            Ramadan Iftar program with all teachers and students
+        <div className="space-y-2">
+          <h2 className="text-[28px] font-bold">
+            সকল শিক্ষক, কর্মচারী ও শিক্ষার্থীদের নিয়ে রমজানে ইফতার কর্মসূচি
+            2024
           </h2>
           <div>
-            <ul className="space-y-3 text-sm text-gray-600">
-              <li className="flex items-center gap-3">
-                <Calendar size={16} />
-                24 March, 2024
+            <ul className="space-y-1 text-muted-foreground">
+              <li className="flex gap-2">
+                <Calendar size={16} className="mt-1" />
+                08 April, 2024
               </li>
-              <li className="flex items-center gap-3">
-                <MapPin size={16} />
-                <span>Al Islah Islami Academy School Ground</span>
+              <li className="flex gap-2">
+                <MapPin size={16} className="mt-1" />
+                <span>আল ইসলাহ ইসলামী একাডেমী স্কুল প্রাঙ্গন</span>
+              </li>
+              <li className="flex gap-2">
+                <Banknote size={16} className="mt-1" />
+                <span>
+                  অংশগ্রহন ফি সর্বনিম্ন 200 টাকা, ক্রিকেট কর্মসূচি 600 টাকা{" "}
+                  <span className="text-sm block text-primary">
+                    (ব্যাচ প্রতিনিধির হাতে জমা দিতে হবে)
+                  </span>
+                </span>
               </li>
             </ul>
           </div>
           <p>
-            Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus
-            enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor
-            praesent donec est. Odio penatibus risus viverra tellus varius sit
-            neque erat velit. Faucibus commodo massa rhoncus, volutpat.
-            Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae
-            sed turpis id.
+            প্রতি বছরের মত করে আল ইসলাহ ইসলামী একাডেমীর মাধ্যমিক পর্যায়ের
+            প্রাক্তন শিক্ষার্থীদের নিয়ে আসন্ন রমজানে ইফতার কর্মসূচি বাস্তবায়নের
+            উদ্যোগ নেওয়া হচ্ছে। কর্মসূচি সুষ্ঠভাবে সম্পন্ন করার লক্ষ্যে সার্বিক
+            দিক পর্যালোচনা করার জন্য কিছু ব্যাচের প্রতিনিধিদের নিয়ে ধারাবাহিক
+            আলোচনা করা হচ্ছে।
+            {/*  সকলের উপস্থিতি নিশ্চিত করার জন্য সকলের সহযোগীতা
+            একান্তভাবে কামনা করছি। */}
           </p>
-          <div className="flex items-center gap-5 justify-between">
-            <div>
-              <Button>Let's Participate</Button>
-              <Button variant="link">Learn More</Button>
+          <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between">
+            <div className="flex items-center">
+              <Button>অংশগ্রহন করুন</Button>
+              <Button variant="link">বিস্তারিত দেখুন</Button>
             </div>
             <div className="flex -space-x-3">
               <Avatar>

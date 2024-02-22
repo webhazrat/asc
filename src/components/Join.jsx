@@ -7,49 +7,49 @@ export default function Join() {
   return (
     <>
       <div className="flex items-center justify-center h-[calc(100vh_-_64px)]">
-        <div className="max-w-sm">
+        <div className="max-w-[400px] w-full">
           <div className="mb-8 text-center space-y-2">
-            <h2 className="text-2xl font-semibold">Create an account</h2>
+            <h2 className="text-2xl font-semibold">অ্যাকাউন্ট তৈরি করুন</h2>
             <p className="text-muted-foreground">
-              Enter your information below to create your account
+              অ্যাকাউন্ট তৈরি করতে নিচে আপনার তথ্যগুলো ইনপুট করুন
             </p>
           </div>
 
           <form className="space-y-8">
             <div className="space-y-3">
               <div className="space-y-1">
-                <label htmlFor="">Name</label>
+                <label htmlFor="">নাম</label>
                 <Input type="text" />
               </div>
               <div className="space-y-1">
-                <label htmlFor="">Email address</label>
+                <label htmlFor="">ইমেইল</label>
                 <Input type="emaill" />
               </div>
               <div className="space-y-1">
-                <label htmlFor="">Phone</label>
+                <label htmlFor="">মোবাইল নাম্বার</label>
                 <Input type="text" />
               </div>
               <div className="space-y-1">
-                <label htmlFor="">SSC Passing year</label>
+                <label htmlFor="">এসএসসি পাশের সাল</label>
                 <Input type="text" />
               </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <label htmlFor="terms">
-                  Are you a student of Al Islah Islami Academy?
+              <div className="flex space-x-2">
+                <Checkbox id="terms" className="mt-[1px]" />
+                <label htmlFor="terms" className="text-sm">
+                  আল ইসলাহ ইসলামী একাডেমী থেকে এসএসসি পাশ করেছিলেন?
                 </label>
               </div>
               <Button type="submit" className="w-full">
-                Create an account
+                সাবমিট করুন
               </Button>
             </div>
             <div class="relative">
               <div class="absolute inset-0 flex items-center">
                 <span class="w-full border-t"></span>
               </div>
-              <div class="relative flex justify-center text-xs uppercase">
+              <div class="relative flex justify-center text-sm">
                 <span class="bg-background px-2 text-muted-foreground">
-                  Or continue with
+                  অথবা চালিয়ে যান
                 </span>
               </div>
             </div>
@@ -63,10 +63,6 @@ export default function Join() {
               />{" "}
               Google
             </Button>
-            <p className="text-center px-5 text-muted-foreground">
-              By clicking continue, you agree to our Terms of Service and
-              Privacy Policy.
-            </p>
           </form>
         </div>
       </div>
