@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Student({ student }) {
   return (
-    <div className="border border-muted rounded-lg p-4 space-y-3 hover:outline outline-2 outline-offset-2 cursor-pointer">
+    <div className="border border-muted rounded-lg p-4 space-y-3 hover:outline outline-2 outline-primary outline-offset-2 cursor-pointer">
       <Image
         src={student.image ? `/${student.image}` : "/placeholder.png"}
         width={100}
