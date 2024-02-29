@@ -1,5 +1,4 @@
 import { Home, LogOut, Settings, User } from "lucide-react";
-import { Button } from "./ui/button";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -9,13 +8,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import Image from "next/image";
-import photo from "../../public/student1.png";
+import photo from "../../../public/student1.png";
+import { Button } from "../ui/button";
 
-export default function DashboardHeader() {
+export default function Header() {
   return (
-    <div className="flex gap-2 items-center justify-end border-b px-4 h-14">
+    <div className="sticky top-0 flex gap-2 items-center justify-end border-b bg-background px-4 h-14">
       <Button size="icon" variant="ghost" asChild>
         <Link href={"/"}>
           <Home size={16} />

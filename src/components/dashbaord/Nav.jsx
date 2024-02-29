@@ -1,6 +1,6 @@
 "use client";
 import { usePathname } from "next/navigation";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Link from "next/link";
 
 export default function Nav({ navs }) {
@@ -13,9 +13,11 @@ export default function Nav({ navs }) {
           className="w-full justify-start"
           size="sm"
           variant={pathname === nav.href ? "" : "ghost"}
+          asChild
         >
-          {nav.icon && <nav.icon className="mr-2 h-4 w-4" />}
-          <Link href={nav.href}>{nav.title}</Link>
+          <Link href={nav.href}>
+            {nav.icon && <nav.icon className="mr-2 h-4 w-4" />} {nav.title}
+          </Link>
         </Button>
       ))}
     </div>

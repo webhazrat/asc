@@ -17,7 +17,7 @@ export default function Login() {
   const form = useForm();
   return (
     <>
-      <div className="flex items-center justify-center h-[calc(100vh_-_64px)]">
+      <div className="flex items-center justify-center py-20">
         <div className="max-w-sm w-full">
           <div className="mb-8 text-center space-y-2">
             <h2 className="text-2xl font-semibold">অ্যাকাউন্ট লগইন করুন</h2>

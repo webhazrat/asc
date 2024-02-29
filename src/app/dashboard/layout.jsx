@@ -1,6 +1,4 @@
 "use client";
-import DashboardHeader from "@/components/DashboardHeader";
-import Nav from "@/components/Nav";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import logo from "../../../public/itwindow.svg";
@@ -11,15 +9,18 @@ import {
   Settings2,
   Users,
 } from "lucide-react";
+import Header from "@/components/dashbaord/Header";
+import Nav from "@/components/dashbaord/Nav";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function DashboardLayout({ children }) {
   return (
     <>
-      <div className="flex">
-        <div className="w-60 border-r h-screen">
-          <div className="h-14 border-b flex items-center p-4">
-            <Image src={logo} height={30} alt="logo" />
-          </div>
+      <div className="w-60 border-r h-screen fixed top-0">
+        <div className="h-14 w-full border-b flex items-center p-4">
+          <Image src={logo} height={30} alt="logo" />
+        </div>
+        <ScrollArea className="h-[calc(100vh_-_64px)]">
           <div className="p-4">
             <Nav
               navs={[
@@ -75,12 +76,12 @@ export default function DashboardLayout({ children }) {
               ]}
             />
           </div>
-        </div>
-        <main className="flex-1">
-          <DashboardHeader />
-          <div className="p-4">{children}</div>
-        </main>
+        </ScrollArea>
       </div>
+      <main className="pl-60">
+        <Header />
+        <div className="p-4">{children}</div>
+      </main>
     </>
   );
 }
