@@ -10,7 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import Header from "@/components/dashbaord/Header";
-import Nav from "@/components/dashbaord/Nav";
+import Nav from "@/components/Nav";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function DashboardLayout({ children }) {
