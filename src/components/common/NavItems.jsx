@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Moon, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -35,7 +35,7 @@ export default function NavItems() {
         <Link href="/login">লগইন</Link>
       </Button>
       <Button asChild>
-        <Link href="/join">জয়েন করুন</Link>
+        <Link href="/register">জয়েন করুন</Link>
       </Button>
     </>
   );

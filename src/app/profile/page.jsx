@@ -1,13 +1,14 @@
 "use client";
-import Footer from "@/components/Footer";
-import HeaderNavigation from "@/components/HeaderNavigation";
-import Nav from "@/components/Nav";
-import { User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Page() {
+  const { data } = useSession();
+  console.log({ data });
   return (
     <>
       <h1>Hello</h1>
+      <Button onClick={() => signOut()}>লগ আউট</Button>
     </>
   );
 }

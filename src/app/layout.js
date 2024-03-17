@@ -1,5 +1,7 @@
 import { Hind_Siliguri } from "next/font/google";
 import "./globals.css";
+import AuthProvider from "@/providers/AuthProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const hind = Hind_Siliguri({
   weight: ["300", "400", "500", "600", "700"],
@@ -14,7 +16,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={hind.className}>{children}</body>
+      <AuthProvider>
+        <body className={hind.className}>
+          <main>{children}</main>
+          <Toaster />
+        </body>
+      </AuthProvider>
     </html>
   );
 }

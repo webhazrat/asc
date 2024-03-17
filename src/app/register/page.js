@@ -1,11 +1,11 @@
 import HeaderNavigation from "@/components/common/HeaderNavigation";
-import LoginForm from "@/components/auth/LoginForm";
+import RegisterForm from "@/components/auth/RegisterForm";
 
 export default function Page() {
   return (
     <>
       <HeaderNavigation />
-      <LoginForm />
+      <RegisterForm />
     </>
   );
 }

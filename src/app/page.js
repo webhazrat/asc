@@ -1,8 +1,8 @@
 import Calculation from "@/components/Calculation";
-import FeaturedEvent from "@/components/FeaturedEvent";
-import Footer from "@/components/Footer";
-import HeaderNavigation from "@/components/HeaderNavigation";
-import Hero from "@/components/Hero";
+import FeaturedEvent from "@/components/event/FeaturedEvent";
+import Footer from "@/components/common/Footer";
+import HeaderNavigation from "@/components/common/HeaderNavigation";
+import Hero from "@/components/common/Hero";
 
 export default function Home() {
   return (

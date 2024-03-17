@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import HeaderNavigation from "@/components/HeaderNavigation";
+import Footer from "@/components/common/Footer";
+import HeaderNavigation from "@/components/common/HeaderNavigation";
 
 export default function Page() {
   return (

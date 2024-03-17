@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Banknote, Calendar, MapPin, Plus } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import event from "../../public/iftar-2023.jpg";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import event from "../../../public/iftar-2023.jpg";
 import Link from "next/link";
 
 export default function FeaturedEvent() {
@@ -14,7 +14,7 @@ export default function FeaturedEvent() {
           <Image
             src={event}
             alt="about"
-            className="rounded-xl shadow-md h-80 object-cover"
+            className="rounded-lg shadow-md h-80 object-cover"
           />
           <div className="absolute bottom-2 left-2 backdrop-filter backdrop-blur-sm bg-white/70 rounded-lg">
             <ul className="flex divide-x-[1px] divide-gray-50/30">

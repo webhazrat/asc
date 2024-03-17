@@ -10,7 +10,7 @@ export default function Event() {
         "events/ramadan-iftar-program-2024-with-all-teachers-staff-and-students"
       }
     >
-      <div className="border border-muted rounded-lg p-4 hover:outline outline-2 outline-offset-2">
+      <div className="border border-muted rounded-lg p-4 hover:outline outline-2 outline-primary outline-offset-2">
         <Image
           src={EventImage}
           height={200}

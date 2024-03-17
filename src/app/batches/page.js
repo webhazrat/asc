@@ -1,6 +1,6 @@
-import HeaderNavigation from "@/components/HeaderNavigation";
-import Batches from "@/components/Batches";
-import Footer from "@/components/Footer";
+import HeaderNavigation from "@/components/common/HeaderNavigation";
+import Batches from "@/components/batch/Batches";
+import Footer from "@/components/common/Footer";
 
 export default function Page() {
   return (

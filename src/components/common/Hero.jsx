@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 export default function Hero() {
   return (
@@ -17,7 +17,7 @@ export default function Hero() {
         </p>
         <div className="flex items-center justify-center gap-2">
           <Button asChild>
-            <Link href={"/join"}>জয়েন করুন</Link>
+            <Link href={"/register"}>জয়েন করুন</Link>
           </Button>
           <Button variant="link">
             <Link href={"/batches"}>ব্যাচসমূহ দেখুন</Link>

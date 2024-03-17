@@ -1,6 +1,6 @@
-import Footer from "@/components/Footer";
-import HeaderNavigation from "@/components/HeaderNavigation";
-import Event from "@/components/Event";
+import Footer from "@/components/common/Footer";
+import HeaderNavigation from "@/components/common/HeaderNavigation";
+import Event from "@/components/event/Event";
 
 export default function Page() {
   return (

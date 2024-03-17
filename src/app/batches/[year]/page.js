@@ -1,5 +1,5 @@
-import Footer from "@/components/Footer";
-import HeaderNavigation from "@/components/HeaderNavigation";
+import Footer from "@/components/common/Footer";
+import HeaderNavigation from "@/components/common/HeaderNavigation";
 import Student from "@/components/Student";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";

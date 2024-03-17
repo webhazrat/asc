@@ -1,7 +1,7 @@
 "use client";
-import Footer from "@/components/Footer";
-import HeaderNavigation from "@/components/HeaderNavigation";
-import Nav from "@/components/Nav";
+import Footer from "@/components/common/Footer";
+import HeaderNavigation from "@/components/common/HeaderNavigation";
+import Nav from "@/components/common/Nav";
 import { ActivitySquare, Link, Lock, User, Users } from "lucide-react";
 
 export default function ProfileLayout({ children }) {

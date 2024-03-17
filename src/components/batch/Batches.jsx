@@ -1,4 +1,4 @@
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import Batch from "./Batch";
 
 export default function Batches() {
