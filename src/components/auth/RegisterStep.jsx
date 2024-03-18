@@ -22,7 +22,6 @@ import { Loader } from "lucide-react";
 export default function RegisterStep({ form, onSubmit }) {
   const {
     formState: { errors, isSubmitting },
-    setError,
   } = form;
 
   return (

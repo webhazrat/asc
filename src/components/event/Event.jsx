@@ -1,7 +1,7 @@
 import { Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import EventImage from "../../public/iftar-2023.jpg";
+import EventImage from "../../../public/iftar-2023.jpg";
 
 export default function Event() {
   return (

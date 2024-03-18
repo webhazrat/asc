@@ -39,22 +39,15 @@ export default function OtpStep({ onSubmit, data, setStep }) {
     formData = { ...formData, phone: data.phone };
     try {
       const response = await verify(formData);
-      if (response.status === 200) {
-        toast({
-          variant: "success",
-          description: response?.message,
-        });
-        setStep(3);
-      } else {
-        setError(response?.error?.field, {
-          type: "server",
-          message: response.error.message,
-        });
-      }
+      toast({
+        variant: "success",
+        description: response?.message,
+      });
+      setStep(3);
     } catch (error) {
       console.log({ RegisterOtpError: error });
-      setError("root.random", {
-        type: "random",
+      setError(error?.field || "common", {
+        type: "server",
         message: error.message,
       });
     }
@@ -119,8 +112,8 @@ export default function OtpStep({ onSubmit, data, setStep }) {
             )}
           />
 
-          {errors?.root?.random && (
-            <p className="text-red-500 text-sm">{errors.root.random.message}</p>
+          {errors?.common && (
+            <p className="text-red-500 text-sm">{errors.common.message}</p>
           )}
 
           <div className="flex justify-between items-center">

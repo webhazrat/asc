@@ -27,27 +27,22 @@ export default function RegisterForm() {
     },
   });
 
+  const { setError } = form;
+
   const { register } = useRegisterMutation();
 
   const handleRegister = async (formData) => {
     try {
       const response = await register(formData);
-      if (response.status === 200) {
-        setStep(2);
-        setData(formData);
-        toast({
-          variant: "success",
-          description: response?.message,
-        });
-      } else {
-        setError(response?.error?.field, {
-          type: "server",
-          message: response.error.message,
-        });
-      }
+      setStep(2);
+      setData(formData);
+      toast({
+        variant: "success",
+        description: response?.message,
+      });
     } catch (error) {
       console.log({ RegisterFormError: error });
-      setError("common", {
+      setError(error?.field || "common", {
         type: "server",
         message: error.message,
       });

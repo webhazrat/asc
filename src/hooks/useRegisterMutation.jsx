@@ -8,7 +8,11 @@ export const useRegisterMutation = () => {
           "Content-Type": "application/json",
         },
       });
+
       const response = await result.json();
+      if (!result.ok) {
+        throw response.error;
+      }
       return response;
     } catch (error) {
       throw error;
@@ -25,6 +29,9 @@ export const useRegisterMutation = () => {
         },
       });
       const response = await result.json();
+      if (!result.ok) {
+        throw response.error;
+      }
       return response;
     } catch (error) {
       throw error;

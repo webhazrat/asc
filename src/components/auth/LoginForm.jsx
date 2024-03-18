@@ -17,11 +17,12 @@ import Link from "next/link";
 import { Checkbox } from "../ui/checkbox";
 import { signIn } from "next-auth/react";
 import { Loader } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -46,7 +47,9 @@ export default function LoginForm() {
         variant: "success",
         description: "সফলভাবে অ্যাকাউন্ট লগইন হয়েছে",
       });
-      router.push("/profile");
+      const search = searchParams.get("callbackUrl");
+      const url = search ? search : "/profile";
+      router.push(url);
     } else {
       setError("common", {
         type: "server",

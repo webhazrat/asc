@@ -4,6 +4,7 @@ import { registerSchema } from "@/lib/zodSchema";
 import otpModel from "@/models/otpModel";
 import studentModel from "@/models/studentModel";
 import { hashSync } from "bcryptjs";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
@@ -15,14 +16,16 @@ export async function POST(req) {
     // existing student find
     const exist = await studentModel.findOne({ phone }).select("status");
 
-    if (exist && exist.status === "Verified") {
-      return Response.json({
-        status: 400,
-        error: {
-          field: "phone",
-          message: "মোবাইল নাম্বার পূর্বেই ব্যবহার করে হয়েছে",
+    if (exist?.status === "Verified") {
+      return NextResponse.json(
+        {
+          error: {
+            field: "phone",
+            message: "মোবাইল নাম্বার পূর্বেই ব্যবহার করে হয়েছে",
+          },
         },
-      });
+        { status: 400 }
+      );
     }
 
     // otp generate and store to db and send to phone
@@ -47,16 +50,20 @@ export async function POST(req) {
       { upsert: true }
     );
 
-    return Response.json({
-      status: 200,
-      title: "অভিনন্দন!",
-      message: `আপনার ফোনে ${phone} ওটিপি পাঠানো হয়েছে`,
-    });
+    return NextResponse.json(
+      {
+        title: "অভিনন্দন!",
+        message: `আপনার ফোনে ${phone} ওটিপি পাঠানো হয়েছে`,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    console.log({ error });
-    return Response.json({
-      status: 500,
-      message: error.message,
-    });
+    console.log({ RegisterError: error });
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      { status: 500 }
+    );
   }
 }

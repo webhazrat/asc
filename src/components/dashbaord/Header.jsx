@@ -1,17 +1,7 @@
-import { Home, LogOut, Settings, User } from "lucide-react";
+import { Home } from "lucide-react";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import Image from "next/image";
-import photo from "../../../public/student1.png";
 import { Button } from "../ui/button";
+import UserDropdown from "../common/UserDropdown";
 
 export default function Header() {
   return (
@@ -21,36 +11,7 @@ export default function Header() {
           <Home size={16} />
         </Link>
       </Button>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-full p-[2px]"
-          >
-            <Image src={photo} alt="photo" className="rounded-full" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 mr-2">
-          <DropdownMenuLabel>আমার অ্যাকাউন্ট</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              <span>প্রোফাইল</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>সেটিংস</span>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>লগ আউট</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <UserDropdown />
     </div>
   );
 }

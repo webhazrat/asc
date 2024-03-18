@@ -15,10 +15,6 @@ export const getYearRange = (start) => {
   return years;
 };
 
-export const generateToken = () => {
-  return crypto.randomBytes(32).toString("base64").replace(/[/+=]/g, "");
-};
-
 export const generateOTP = () => {
   const max = 999999;
   const min = 100000;
@@ -38,3 +34,7 @@ export async function sendSMS(phone, msg) {
     return Promise.reject(error);
   }
 }
+
+export const firstLetter = (name) => {
+  return name?.charAt(0);
+};

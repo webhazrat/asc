@@ -2,6 +2,7 @@ import connectDB from "@/lib/connect";
 import { otpSchema } from "@/lib/zodSchema";
 import otpModel from "@/models/otpModel";
 import studentModel from "@/models/studentModel";
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
@@ -13,40 +14,50 @@ export async function POST(req) {
     // verify otp
     const otpDoc = await otpModel.findOne({ phone });
     if (!otpDoc || otpDoc.otp !== otp) {
-      return Response.json({
-        status: 400,
-        error: {
-          field: "otp",
-          message: "OTP টি সঠিক নয়",
+      return NextResponse.json(
+        {
+          error: {
+            field: "otp",
+            message: "OTP টি সঠিক নয়",
+          },
         },
-      });
+        { status: 400 }
+      );
     }
 
     const now = Date.now();
     if (now > otpDoc.expiresAt) {
-      return Response.json({
-        status: 400,
-        error: {
-          field: "otp",
-          message: "OTP টির মেয়াদ শেষ",
+      return NextResponse.json(
+        {
+          error: {
+            field: "otp",
+            message: "OTP টির মেয়াদ শেষ",
+          },
         },
-      });
+        { status: 400 }
+      );
     }
 
     await otpModel.deleteOne({ phone });
 
     await studentModel.findOneAndUpdate({ phone }, { status: "Verified" });
 
-    return Response.json({
-      status: 200,
-      title: "অভিনন্দন!",
-      message: `আপনার অ্যাকাউন্ট সম্পন্ন হয়েছে`,
-    });
+    return NextResponse.json(
+      {
+        title: "অভিনন্দন!",
+        message: `আপনার অ্যাকাউন্ট সম্পন্ন হয়েছে`,
+      },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.log({ verifyError: error });
-    return Response.json({
-      status: 500,
-      message: error.message,
-    });
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      { status: 500 }
+    );
   }
 }
