@@ -3,11 +3,8 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { Moon, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
-import UserDropdown from "./UserDropdown";
 
 export default function NavItems() {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const isActive = (path) => {
     return path === pathname || pathname.includes(path) ? "secondary" : "ghost";
@@ -35,19 +32,6 @@ export default function NavItems() {
         <span className="sr-only">Search</span>
         <Search size={16} />
       </Button>
-
-      {session ? (
-        <UserDropdown />
-      ) : (
-        <>
-          <Button variant={isActive("/login")} asChild>
-            <Link href="/login">লগইন</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/register">জয়েন করুন</Link>
-          </Button>
-        </>
-      )}
     </>
   );
 }

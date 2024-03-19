@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { isValidObjectId } from "mongoose";
 
 export async function GET(req, { params }) {
-  const id = params.id;
+  const { id } = params;
   try {
     await connectDB();
 

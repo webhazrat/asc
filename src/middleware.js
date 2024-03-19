@@ -8,13 +8,13 @@ export default withAuth(
 
     if (
       req.nextUrl.pathname.startsWith("/dashboard") &&
-      req.nextauth.token?.role !== "Admin"
+      !req.nextauth.token?.role.includes("Admin")
     ) {
       return NextResponse.redirect(new URL("/profile", req.url));
     }
     if (
       req.nextUrl.pathname.startsWith("/profile/event-participants") &&
-      req.nextauth.token?.role !== "Head"
+      !req.nextauth.token?.role.includes("Head")
     ) {
       return NextResponse.redirect(new URL("/profile", req.url));
     }

@@ -11,7 +11,7 @@ export default function Nav({ navs }) {
     <div className="flex flex-col gap-1">
       {navs.map((nav) => {
         if (
-          session?.user.role !== "Head" &&
+          !session?.user.role.includes("Head") &&
           nav.href === "/profile/event-participants"
         ) {
           return;
@@ -21,7 +21,13 @@ export default function Nav({ navs }) {
             key={nav.id}
             className="w-full justify-start"
             size="sm"
-            variant={pathname === nav.href ? "" : "ghost"}
+            variant={
+              (nav.href.includes("/dashboard/") &&
+                pathname.includes(nav.href)) ||
+              pathname === nav.href
+                ? ""
+                : "ghost"
+            }
             asChild
           >
             <Link href={nav.href}>

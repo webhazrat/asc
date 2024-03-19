@@ -6,6 +6,12 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+export const SERVER_URL = "https://aiiasc.vercel.app";
+
+export const firstLetter = (name) => {
+  return name?.charAt(0);
+};
+
 export const getYearRange = (start) => {
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -22,6 +28,15 @@ export const generateOTP = () => {
   return otp;
 };
 
+export const uniqueFilename = (originalFilename) => {
+  const ext = originalFilename.split(".").pop();
+  const uniqueIdentifier = crypto.randomBytes(16).toString("hex");
+  const newFilename = `${uniqueIdentifier}.${ext}`;
+  return newFilename;
+};
+
+export const timeCountDown = (toDate) => {};
+
 export async function sendSMS(phone, msg) {
   const encodeMsg = encodeURIComponent(msg);
   try {
@@ -34,7 +49,3 @@ export async function sendSMS(phone, msg) {
     return Promise.reject(error);
   }
 }
-
-export const firstLetter = (name) => {
-  return name?.charAt(0);
-};

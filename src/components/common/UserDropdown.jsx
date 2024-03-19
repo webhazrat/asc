@@ -31,7 +31,7 @@ export default function UserDropdown() {
         <DropdownMenuLabel>আমার অ্যাকাউন্ট</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {session?.user.role === "Admin" && (
+          {session?.user.role.includes("Admin") && (
             <Link href={"/dashboard"}>
               <DropdownMenuItem className="cursor-pointer">
                 <AppWindow className="mr-2 h-4 w-4" />

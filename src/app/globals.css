@@ -54,6 +54,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground text-[15px] font-light min-h-screen;
+    @apply bg-background text-foreground text-[15px] font-normal min-h-screen;
   }
 }

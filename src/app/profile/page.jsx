@@ -3,9 +3,12 @@ import imageUrl from "../../../public/student1.png";
 import ProfilePhoto from "@/components/profile/ProfilePhoto";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
+import { SERVER_URL } from "@/lib/utils";
+import ProfileEditModal from "@/components/profile/ProfileEditModal";
+import ProfileForm from "@/components/profile/ProfileForm";
 
 async function getData(id) {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/profile/${id}`);
+  const res = await fetch(`${SERVER_URL}/api/profile/${id}`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -21,7 +24,7 @@ export default async function Page() {
     passingYear,
     bloodGroup,
     presentAddress,
-    parmanentAddress,
+    permanentAddress,
     qualification,
     institute,
     professionalInstitute,
@@ -35,7 +38,9 @@ export default async function Page() {
     <>
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-medium mb-3">প্রোফাইল</h1>
-        <Button size="sm">আপডেট</Button>
+        <ProfileEditModal>
+          <ProfileForm user={data.user} />
+        </ProfileEditModal>
       </div>
       <div>
         <div className="flex gap-5 items-center">
@@ -53,7 +58,7 @@ export default async function Page() {
             </h2>
             <p>{phone}</p>
             <p>রক্তের গ্রুপ : {bloodGroup || "-"}</p>
-            <p>Role: {role}</p>
+            <p>Role: {role.join(", ")}</p>
           </div>
         </div>
         <hr className="my-6" />
@@ -66,7 +71,7 @@ export default async function Page() {
             </div>
             <div>
               <p className="font-medium">স্থায়ী ঠিকানা :</p>
-              <p>{parmanentAddress || "-"}</p>
+              <p>{permanentAddress || "-"}</p>
             </div>
             <div>
               <p className="font-medium">জন্ম তারিখ :</p>
@@ -76,26 +81,26 @@ export default async function Page() {
           <div className="space-y-5">
             <h1 className="text-lg font-medium">শিক্ষাগত তথ্য</h1>
             <div>
-              <p>এসএসসি পাশের সাল :</p>
+              <p className="font-medium">এসএসসি পাশের সাল :</p>
               <p>{passingYear || "-"}</p>
             </div>
             <div>
-              <p>সর্বশেষ শিক্ষাগত যোগ্যতা :</p>
+              <p className="font-medium">সর্বশেষ শিক্ষাগত যোগ্যতা :</p>
               <p>{qualification || "-"}</p>
             </div>
             <div>
-              <p>প্রতিষ্ঠানের নাম :</p>
+              <p className="font-medium">প্রতিষ্ঠানের নাম :</p>
               <p>{institute || "-"}</p>
             </div>
           </div>
           <div className="space-y-5">
             <h1 className="text-lg font-medium">পেশাগত তথ্য</h1>
             <div>
-              <p>কর্মরত প্রতিষ্ঠান :</p>
+              <p className="font-medium">কর্মরত প্রতিষ্ঠান :</p>
               <p>{professionalInstitute || "-"}</p>
             </div>
             <div>
-              <p>পদবি :</p>
+              <p className="font-medium">পদবি :</p>
               <p>{designation || "-"}</p>
             </div>
           </div>
