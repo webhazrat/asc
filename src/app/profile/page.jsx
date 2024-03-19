@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
 
 async function getData(id) {
-  const res = await fetch(`http://localhost:3000/api/profile/${id}`);
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/profile/${id}`);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
