@@ -1,6 +1,6 @@
 import { SERVER_URL } from "@/lib/utils";
 
-export const useRegisterMutation = () => {
+export const useRegister = () => {
   const register = async (formData) => {
     try {
       const result = await fetch(`${SERVER_URL}/api/auth/register`, {

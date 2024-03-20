@@ -1,6 +1,14 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 export const batchesColumns = () => [
   {
@@ -299,22 +307,7 @@ export const eventsColumns = () => [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          নাম
-          <ChevronsUpDown size={12} className="ml-2" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "designation",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
@@ -329,7 +322,7 @@ export const eventsColumns = () => [
     },
   },
   {
-    accessorKey: "subject",
+    accessorKey: "feeDetail",
     header: ({ column }) => {
       return (
         <Button
@@ -337,14 +330,14 @@ export const eventsColumns = () => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          সাবজেক্ট
+          ফি
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "joined",
+    accessorKey: "location",
     header: ({ column }) => {
       return (
         <Button
@@ -352,7 +345,22 @@ export const eventsColumns = () => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          যোগদানের তারিখ
+          স্থান
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "date",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ইভেন্ট তারিখ
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -367,7 +375,7 @@ export const eventsColumns = () => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          অবস্থা
+          স্ট্যাটাস
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -403,11 +411,15 @@ export const eventsColumns = () => [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
               শিক্ষার্থী
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(payment.id)}
+            >
+              আপডেট
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>

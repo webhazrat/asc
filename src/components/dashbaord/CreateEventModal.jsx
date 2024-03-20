@@ -18,15 +18,10 @@ export default function CreateEventModal() {
       </DialogTrigger>
       <DialogContent className="p-0">
         <ScrollArea className="max-h-[calc(100vh_-_100px)]">
-          <div className="p-6 space-y-4">
+          <div className="p-6 space-y-5">
             <DialogHeader>
               <DialogTitle>নতুন ইভেন্ট</DialogTitle>
-              <DialogDescription>
-                এখানে একটি নতুন ইভেন্ট সংযুক্ত করতে নিচের ইনপুটগুলো পুরণ করে সেভ
-                করুন
-              </DialogDescription>
             </DialogHeader>
-
             <EventForm />
           </div>
         </ScrollArea>

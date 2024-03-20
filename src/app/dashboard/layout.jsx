@@ -6,6 +6,8 @@ import {
   CalendarClock,
   Group,
   LayoutGrid,
+  MessageCircle,
+  MessageSquare,
   Settings2,
   Users,
 } from "lucide-react";
@@ -68,7 +70,13 @@ export default function DashboardLayout({ children }) {
                   icon: Users,
                 },
                 {
-                  id: "7",
+                  id: "8",
+                  title: "মেসেজ সেটিংস",
+                  href: "/dashboard/message",
+                  icon: MessageSquare,
+                },
+                {
+                  id: "8",
                   title: "সেটিংস",
                   href: "/dashboard/settings",
                   icon: Settings2,

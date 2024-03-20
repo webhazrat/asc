@@ -10,7 +10,7 @@ export async function GET(req, { params }) {
     if (event) {
       return NextResponse.json(
         {
-          data: event,
+          event,
         },
         {
           status: 200,

@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { otpSchema } from "@/lib/zodSchema";
 import { Loader } from "lucide-react";
-import { useRegisterMutation } from "@/hooks/useRegisterMutation";
+import { useRegister } from "@/hooks/useRegister";
 import { useToast } from "../ui/use-toast";
 import { useEffect, useRef, useState } from "react";
 
@@ -33,7 +33,7 @@ export default function OtpStep({ onSubmit, data, setStep }) {
   const timerRef = useRef();
   const [remainingTime, setRemainingTime] = useState(5 * 60);
 
-  const { verify } = useRegisterMutation();
+  const { verify } = useRegister();
 
   const handleVerify = async (formData) => {
     formData = { ...formData, phone: data.phone };

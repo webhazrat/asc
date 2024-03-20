@@ -1,5 +1,5 @@
 import connectDB from "@/lib/connect";
-import { generateOTP } from "@/lib/utils";
+import { generateOTP } from "@/lib/helpers";
 import { registerSchema } from "@/lib/zodSchema";
 import otpModel from "@/models/otpModel";
 import studentModel from "@/models/studentModel";

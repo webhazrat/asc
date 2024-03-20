@@ -1,17 +1,20 @@
+import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
 import { ScrollArea } from "../ui/scroll-area";
+import ProfileForm from "./ProfileForm";
 
-export default function ProfileEditModal({ children }) {
+export default function ProfileEditModal({ user }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button size="sm">আপডেট</Button>
       </DialogTrigger>
@@ -21,7 +24,7 @@ export default function ProfileEditModal({ children }) {
             <DialogHeader>
               <DialogTitle>প্রোফাইল</DialogTitle>
             </DialogHeader>
-            {children}
+            <ProfileForm user={user} setIsOpen={setIsOpen} />
           </div>
         </ScrollArea>
       </DialogContent>

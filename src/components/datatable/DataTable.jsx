@@ -48,7 +48,7 @@ export function DataTable({
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
-    data,
+    data: data || [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

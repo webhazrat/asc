@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { getYearRange } from "@/lib/utils";
+import { getYearRange, getbloodGroups } from "@/lib/utils";
 import Link from "next/link";
 import { Loader } from "lucide-react";
 
@@ -120,14 +120,11 @@ export default function RegisterStep({ form, onSubmit }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="A+">A+</SelectItem>
-                    <SelectItem value="A-">A-</SelectItem>
-                    <SelectItem value="B+">B+</SelectItem>
-                    <SelectItem value="B-">B-</SelectItem>
-                    <SelectItem value="O+">O+</SelectItem>
-                    <SelectItem value="O-">O-</SelectItem>
-                    <SelectItem value="AB+">AB+</SelectItem>
-                    <SelectItem value="AB-">AB-</SelectItem>
+                    {getbloodGroups().map((group) => (
+                      <SelectItem key={group} value={group}>
+                        {group}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />

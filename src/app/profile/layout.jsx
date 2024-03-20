@@ -9,8 +9,8 @@ export default function ProfileLayout({ children }) {
     <>
       <HeaderNavigation />
       <div className="container py-10">
-        <div className="flex gap-4">
-          <div className="w-44">
+        <div className="flex flex-col sm:flex-row gap-5">
+          <div className="sm:w-44">
             <Nav
               navs={[
                 {
@@ -52,7 +52,7 @@ export default function ProfileLayout({ children }) {
               ]}
             />
           </div>
-          <div className="flex-1 px-4 border-l">{children}</div>
+          <div className="flex-1 sm:px-4 sm:border-l">{children}</div>
         </div>
       </div>
       <Footer />

@@ -84,7 +84,6 @@ export default function EventForm() {
                   }}
                 />
               </FormControl>{" "}
-              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -99,7 +98,6 @@ export default function EventForm() {
               <FormControl>
                 <Input type="text" {...field} />
               </FormControl>{" "}
-              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -114,7 +112,6 @@ export default function EventForm() {
               <FormControl>
                 <Input type="text" {...field} />
               </FormControl>{" "}
-              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -129,7 +126,6 @@ export default function EventForm() {
               <FormControl>
                 <Textarea className="resize-none" {...field} />
               </FormControl>
-              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -144,7 +140,6 @@ export default function EventForm() {
               <FormControl>
                 <Input type="text" {...field} />
               </FormControl>
-              <FormDescription></FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -158,8 +153,7 @@ export default function EventForm() {
               <FormLabel>স্থান</FormLabel>
               <FormControl>
                 <Input type="text" {...field} />
-              </FormControl>{" "}
-              <FormDescription></FormDescription>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -172,31 +166,9 @@ export default function EventForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>তারিখ</FormLabel>
-                <div>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button variant={"outline"} className="w-full">
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span></span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <FormDescription></FormDescription>
+                <FormControl>
+                  <Input type="date" {...field} className="block" />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

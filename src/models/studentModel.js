@@ -5,7 +5,7 @@ const studentSchema = new mongoose.Schema(
     name: String,
     phone: { type: String, required: true, unique: true },
     role: { type: [String], default: ["General"] },
-    photo: String,
+    avatar: String,
     password: String,
     bloodGroup: String,
     presentAddress: String,
@@ -19,7 +19,6 @@ const studentSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: ["Verified", "Unverified"],
       default: "Unverified",
     },
   },

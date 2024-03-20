@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/zodSchema";
 import { useState } from "react";
 import OtpStep from "./OtpStep";
-import { useRegisterMutation } from "@/hooks/useRegisterMutation";
+import { useRegister } from "@/hooks/useRegister";
 import { useToast } from "../ui/use-toast";
 import RegisterStep from "./RegisterStep";
 import SuccessStep from "./SuccessStep";
@@ -29,7 +29,7 @@ export default function RegisterForm() {
 
   const { setError } = form;
 
-  const { register } = useRegisterMutation();
+  const { register } = useRegister();
 
   const handleRegister = async (formData) => {
     try {

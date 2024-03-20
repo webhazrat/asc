@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getbloodGroups } from "./utils";
 
 const currentYear = new Date().getFullYear();
 
@@ -18,15 +19,9 @@ export const registerSchema = z.object({
     .refine((value) => value >= 1998 && value < currentYear, {
       message: `পাশের সাল 1998 এবং ${currentYear - 1} এর মধ্যে হতে হবে`,
     }),
-  bloodGroup: z
-    .string()
-    .refine(
-      (value) =>
-        ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].includes(value),
-      {
-        message: `সঠিক ব্লাড গ্রুপ ইনপুট করুন`,
-      }
-    ),
+  bloodGroup: z.string().refine((value) => getbloodGroups().includes(value), {
+    message: `সঠিক ব্লাড গ্রুপ ইনপুট করুন`,
+  }),
 });
 
 // otp verify server validation

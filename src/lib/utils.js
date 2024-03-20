@@ -1,17 +1,29 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import crypto from "crypto";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-export const SERVER_URL = "https://aiiasc.vercel.app";
+export const SERVER_URL = "http://localhost:3000";
 
-export const firstLetter = (name) => {
-  return name?.charAt(0);
+// swr fetcher
+export const fetcher = async (...args) => {
+  const res = await fetch(...args);
+  return res.json();
 };
 
+// first letter from string
+export const firstLetter = (string) => {
+  return string?.charAt(0);
+};
+
+// blood groups array
+export const getbloodGroups = () => {
+  return ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"];
+};
+
+// year range from start to current - 1
 export const getYearRange = (start) => {
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -21,31 +33,4 @@ export const getYearRange = (start) => {
   return years;
 };
 
-export const generateOTP = () => {
-  const max = 999999;
-  const min = 100000;
-  const otp = Math.floor(crypto.randomInt(max - min + 1) + min).toString();
-  return otp;
-};
-
-export const uniqueFilename = (originalFilename) => {
-  const ext = originalFilename.split(".").pop();
-  const uniqueIdentifier = crypto.randomBytes(16).toString("hex");
-  const newFilename = `${uniqueIdentifier}.${ext}`;
-  return newFilename;
-};
-
 export const timeCountDown = (toDate) => {};
-
-export async function sendSMS(phone, msg) {
-  const encodeMsg = encodeURIComponent(msg);
-  try {
-    const response = await fetch(
-      `https://tpsms.xyz/sms/api?action=send-sms&api_key=${process.env.SMS_API_KEY}=&to=${phone}&from=8809612444246&sms=${encodeMsg}`
-    );
-    const data = await response.json();
-    return Promise.resolve(data);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-}
