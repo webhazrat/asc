@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, Loader } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -71,7 +71,7 @@ export function DataTable({
       <div className="flex gap-3 items-center justify-between">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
+            <Button variant="outline" size="sm">
               <ChevronsUpDown className="w-3 h-3 mr-2" /> View
             </Button>
           </DropdownMenuTrigger>
@@ -132,7 +132,7 @@ export function DataTable({
                   colSpan={columns.length}
                   className="text-center dark:text-slate-300"
                 >
-                  Loading...
+                  লোড হচ্ছে...
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (

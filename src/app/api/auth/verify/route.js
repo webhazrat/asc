@@ -16,10 +16,8 @@ export async function POST(req) {
     if (!otpDoc || otpDoc.otp !== otp) {
       return NextResponse.json(
         {
-          error: {
-            field: "otp",
-            message: "OTP টি সঠিক নয়",
-          },
+          field: "otp",
+          message: "OTP টি সঠিক নয়",
         },
         { status: 400 }
       );
@@ -29,10 +27,8 @@ export async function POST(req) {
     if (now > otpDoc.expiresAt) {
       return NextResponse.json(
         {
-          error: {
-            field: "otp",
-            message: "OTP টির মেয়াদ শেষ",
-          },
+          field: "otp",
+          message: "OTP টির মেয়াদ শেষ",
         },
         { status: 400 }
       );

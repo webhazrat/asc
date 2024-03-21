@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { format } from "date-fns";
 
 export const batchesColumns = () => [
   {
@@ -283,7 +284,7 @@ export const teachersColumns = () => [
   },
 ];
 
-export const eventsColumns = () => [
+export const eventsColumns = (setEventId, setEventData) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -365,6 +366,24 @@ export const eventsColumns = () => [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return format(new Date(row.getValue("date")), "dd MMMM yyyy");
+    },
+  },
+  {
+    accessorKey: "author.name",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          অথোর
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "status",
@@ -395,17 +414,20 @@ export const eventsColumns = () => [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return format(new Date(row.getValue("createdAt")), "dd MMMM yyyy");
+    },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const event = row.original;
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="h-6 w-6 p-0">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
@@ -414,16 +436,23 @@ export const eventsColumns = () => [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              শিক্ষার্থী
+              অংশগ্রহনকারী
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setEventData(event)}>
+              আপডেট
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
-              আপডেট
+              আয় ব্যয়
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-500 hover:!text-red-500"
+              onClick={() => setEventId(event._id)}
+            >
+              ডিলিট
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -37,7 +37,6 @@ export default function RegisterForm() {
       setStep(2);
       setData(formData);
       toast({
-        variant: "success",
         description: response?.message,
       });
     } catch (error) {

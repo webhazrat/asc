@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import { format } from "date-fns";
-import { DialogFooter } from "../ui/dialog";
+import { Button } from "../../ui/button";
+import { DialogFooter } from "../../ui/dialog";
 import {
   Form,
   FormControl,
@@ -10,84 +9,141 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { CalendarIcon, Loader } from "lucide-react";
-import { Textarea } from "../ui/textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Calendar } from "../ui/calendar";
+} from "../../ui/form";
+import { Input } from "../../ui/input";
+import { Loader } from "lucide-react";
+import { Textarea } from "../../ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 import { SERVER_URL } from "@/lib/utils";
-export default function EventForm() {
+import { useState } from "react";
+import Image from "next/image";
+import { mutate } from "swr";
+import { toast } from "@/components/ui/use-toast";
+import { format } from "date-fns";
+
+export default function EventForm({ setIsModalOpen, event }) {
+  const [seletedThumbnail, setSelectedThumbnail] = useState(
+    event.thumbnail ? `/uploads/${event.thumbnail}` : ""
+  );
+
   const form = useForm({
-    defaultValues: {
-      thumbnail: "",
-      title: "",
-      slug: "",
-      description: "",
-      feeDetail: "",
-      location: "",
-      date: "",
-      status: "",
-    },
+    defaultValues: event._id
+      ? {
+          ...event,
+          date: event.date ? format(new Date(event.date), "yyyy-MM-dd") : "",
+        }
+      : {
+          thumbnail: "",
+          title: "",
+          slug: "",
+          description: "",
+          feeDetail: "",
+          location: "",
+          date: "",
+          status: "",
+        },
   });
 
   const {
     formState: { isSubmitting },
+    setError,
   } = form;
 
+  // onChange thumbnail hanlder
+  const handleThumbChange = (file) => {
+    const thumbnail = URL.createObjectURL(file);
+    setSelectedThumbnail(thumbnail);
+  };
+
+  // create an event
+  const createEvent = async (formData) => {
+    const res = await fetch(`${SERVER_URL}/api/events`, {
+      method: "POST",
+      body: formData,
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
+    }
+    return res.json();
+  };
+
+  // patch an event
+  const updateEvent = async (formData) => {
+    const res = await fetch(`${SERVER_URL}/api/events`, {
+      method: "PATCH",
+      body: formData,
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
+    }
+    return res.json();
+  };
+
+  // hanlde form submit
   const handleEvent = async (data) => {
     const formData = new FormData();
-    formData.append("thumbnail", data.thumbnail);
-    formData.append("title", data.title);
-    formData.append("slug", data.slug);
-    formData.append("description", data.description);
-    formData.append("feeDetail", data.feeDetail);
-    formData.append("location", data.location);
-    formData.append("date", data.date);
-    formData.append("status", data.status);
-    console.log(Object.fromEntries(formData));
-
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
     try {
-      const result = await fetch(`${SERVER_URL}/api/events`, {
-        method: "POST",
-        body: formData,
+      const res = event._id
+        ? await updateEvent(formData)
+        : await createEvent(formData);
+      mutate(`/api/events`);
+      setIsModalOpen(false);
+      toast({
+        description: res.message,
       });
-
-      const response = await result.json();
-      console.log({ response });
     } catch (error) {
-      console.error(error);
+      console.error({ eventCreateUpdateError: error });
+      setError(error?.field || "common", {
+        type: "server",
+        message: error.message,
+      });
     }
   };
 
   return (
     <Form {...form}>
       <form className="space-y-3" onSubmit={form.handleSubmit(handleEvent)}>
-        <FormField
-          control={form.control}
-          name="thumbnail"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>ইমেজ</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  onChange={(e) => {
-                    field.onChange(e.target.files[0]);
-                  }}
-                />
-              </FormControl>{" "}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div>
+          {seletedThumbnail ? (
+            <Image
+              src={seletedThumbnail}
+              width={400}
+              height={192}
+              alt="blog"
+              className="mb-1 max-h-48 rounded-md object-contain w-auto mx-auto"
+            />
+          ) : null}
+          <FormField
+            control={form.control}
+            name="thumbnail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>ইমেজ</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    onChange={(e) => {
+                      field.onChange(e.target.files[0]);
+                      handleThumbChange(e.target.files[0]);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -97,7 +153,7 @@ export default function EventForm() {
               <FormLabel>টাইটেল</FormLabel>
               <FormControl>
                 <Input type="text" {...field} />
-              </FormControl>{" "}
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -111,7 +167,7 @@ export default function EventForm() {
               <FormLabel>স্ল্যাগ</FormLabel>
               <FormControl>
                 <Input type="text" {...field} />
-              </FormControl>{" "}
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

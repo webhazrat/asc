@@ -32,7 +32,7 @@ export default function ProfileForm({ user, setIsOpen }) {
   const form = useForm({
     defaultValues: {
       ...user,
-      dob: format(new Date(user.dob), "yyyy-MM-dd"),
+      dob: user?.dob ? format(new Date(user.dob), "yyyy-MM-dd") : "",
     },
   });
 
@@ -47,16 +47,15 @@ export default function ProfileForm({ user, setIsOpen }) {
   };
 
   const updateUser = async (formData) => {
-    try {
-      const res = await fetch(`${SERVER_URL}/api/profile`, {
-        method: "PATCH",
-        body: formData,
-      });
-      const result = await res.json();
-      return Promise.resolve(result);
-    } catch (error) {
-      return Promise.reject(error);
+    const res = await fetch(`${SERVER_URL}/api/profile`, {
+      method: "PATCH",
+      body: formData,
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
     }
+    return res.json();
   };
 
   // handle submit an event
@@ -66,8 +65,14 @@ export default function ProfileForm({ user, setIsOpen }) {
     for (const key in data) {
       formData.append(key, data[key]);
     }
-    setIsOpen(false);
-    mutate(`/api/profile/${user._id}`, updateUser(formData));
+
+    try {
+      const res = await updateUser(formData);
+      mutate(`/api/profile/${user._id}`);
+      setIsOpen(false);
+    } catch (error) {
+      console.error({ userUpdateError: error });
+    }
   };
 
   return (

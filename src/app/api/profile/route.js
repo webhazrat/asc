@@ -61,7 +61,7 @@ export async function PATCH(req) {
       .select("-password");
 
     return NextResponse.json(
-      { data: student, message: "প্রোফাইল তথ্য সফলভাবে আপডেট হয়েছে" },
+      { title: "সফল!", message: "প্রোফাইল তথ্য সফলভাবে আপডেট হয়েছে" },
       { status: 200 }
     );
   } catch (error) {

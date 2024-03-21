@@ -70,7 +70,7 @@ export default function DashboardLayout({ children }) {
                   icon: Users,
                 },
                 {
-                  id: "8",
+                  id: "7",
                   title: "মেসেজ সেটিংস",
                   href: "/dashboard/message",
                   icon: MessageSquare,

@@ -1,18 +1,16 @@
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { ScrollArea } from "../ui/scroll-area";
-import EventForm from "./EventForm";
+} from "../../ui/dialog";
+import { ScrollArea } from "../../ui/scroll-area";
 
-export default function CreateEventModal() {
+export default function EventModal({ children, isModalOpen, setIsModalOpen }) {
   return (
-    <Dialog>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
         <Button size="sm">ইভেন্ট সংযুক্ত করুন</Button>
       </DialogTrigger>
@@ -22,7 +20,7 @@ export default function CreateEventModal() {
             <DialogHeader>
               <DialogTitle>নতুন ইভেন্ট</DialogTitle>
             </DialogHeader>
-            <EventForm />
+            {children}
           </div>
         </ScrollArea>
       </DialogContent>

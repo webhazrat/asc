@@ -1,16 +1,19 @@
 import { NextResponse } from "next/server";
-import eventModal from "@/models/eventModal";
+import eventModel from "@/models/eventModel";
 import connectDB from "@/lib/connect";
 import { checkAdmin } from "@/lib/apiAuth";
 import { writeFile } from "fs/promises";
 import { join } from "path";
 import { generateFilename } from "@/lib/helpers";
 
-// all events
+// get all events
 export async function GET(req) {
   try {
     await connectDB();
-    const events = await eventModal.find();
+    const events = await eventModel.find().populate({
+      path: "author",
+      select: { name: true, _id: true, avatar: true },
+    });
     return NextResponse.json({ events }, { status: 200 });
   } catch (error) {
     console.error({ eventsGetError: error });
@@ -18,13 +21,33 @@ export async function GET(req) {
   }
 }
 
+// create an event
 export async function POST(req) {
   try {
     const session = await checkAdmin();
-    const formData = await req.formData();
-    const data = Object.fromEntries(formData);
-    const { thumbnail } = data;
     await connectDB();
+    const formData = await req.formData();
+    let {
+      thumbnail,
+      title,
+      slug,
+      description,
+      feeDetail,
+      location,
+      date,
+      status,
+    } = Object.fromEntries(formData);
+
+    const event = await eventModel.countDocuments({ slug });
+    if (event) {
+      return NextResponse.json(
+        {
+          field: "slug",
+          message: "ইভেন্ট স্ল্যাগটি পূর্বেই ব্যবহার করা হয়েছে",
+        },
+        { status: 400 }
+      );
+    }
 
     if (thumbnail.name) {
       const thumbnailName = generateFilename(thumbnail.name);
@@ -32,16 +55,23 @@ export async function POST(req) {
       const buffer = Buffer.from(bytes);
       const path = join("", "public/uploads", thumbnailName);
       await writeFile(path, buffer);
-      data.thumbnail = thumbnailName;
+      thumbnail = thumbnailName;
     }
 
-    const event = await eventModal.create({
-      ...data,
+    await eventModel.create({
       author: session.user._id,
+      thumbnail,
+      title,
+      slug,
+      description,
+      feeDetail,
+      location,
+      date,
+      status,
     });
 
     return NextResponse.json(
-      { data: event, message: "ইভেন্ট সফলভাবে সংযুক্ত হয়েছে" },
+      { title: "সফল!", message: "ইভেন্ট সফলভাবে সংযুক্ত হয়েছে" },
       { status: 201 }
     );
   } catch (error) {

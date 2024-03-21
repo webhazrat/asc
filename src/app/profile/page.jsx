@@ -54,7 +54,7 @@ export default function Page() {
             <div>
               <p className="font-medium">জন্ম তারিখ :</p>
               <p>
-                {(user?.dob && format(new Date(user?.dob), "dd MMM yyyy")) ||
+                {(user?.dob && format(new Date(user.dob), "dd MMMM yyyy")) ||
                   "-"}
               </p>
             </div>

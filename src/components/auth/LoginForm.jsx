@@ -44,7 +44,6 @@ export default function LoginForm() {
     });
     if (response.ok) {
       toast({
-        variant: "success",
         description: "সফলভাবে অ্যাকাউন্ট লগইন হয়েছে",
       });
       const search = searchParams.get("callbackUrl");

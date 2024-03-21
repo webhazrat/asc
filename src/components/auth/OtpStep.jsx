@@ -40,7 +40,6 @@ export default function OtpStep({ onSubmit, data, setStep }) {
     try {
       const response = await verify(formData);
       toast({
-        variant: "success",
         description: response?.message,
       });
       setStep(3);
