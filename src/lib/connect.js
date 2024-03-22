@@ -6,16 +6,12 @@ if (!uri) {
   throw new Error("Please define the MONGODB_URI environment variable");
 }
 
-const options = {
-  bufferCommands: false,
-};
-
 let connection;
 
 const connectDB = async () => {
   if (!connection) {
     try {
-      connection = await mongoose.connect(uri, options);
+      connection = await mongoose.connect(uri);
       console.log("Connected to MongoDB");
     } catch (error) {
       console.error("Error connecting to MongoDB:", error);

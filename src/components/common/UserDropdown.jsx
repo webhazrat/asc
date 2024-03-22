@@ -11,8 +11,8 @@ import { Button } from "../ui/button";
 import { AppWindow, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import ProfilePhoto from "../profile/ProfilePhoto";
 import { useUser } from "@/hooks/useUser";
+import CustomAvatar from "./CustomAvatar";
 
 export default function UserDropdown() {
   const { user, isLoading } = useUser();
@@ -24,7 +24,7 @@ export default function UserDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
-          <ProfilePhoto
+          <CustomAvatar
             avatar={user?.avatar ? `/uploads/avatars/${user?.avatar}` : ""}
             name={user?.name}
           />

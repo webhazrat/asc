@@ -1,7 +1,7 @@
-import { SERVER_URL, firstLetter } from "@/lib/utils";
+import { firstLetter } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-export default function ProfilePhoto({ avatar, name }) {
+export default function CustomAvatar({ avatar, name }) {
   return (
     <Avatar className="w-full h-full">
       <AvatarImage src={avatar} alt={name} />

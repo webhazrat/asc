@@ -11,7 +11,7 @@ import {
 } from "../ui/dropdown-menu";
 import { format } from "date-fns";
 
-export const batchesColumns = () => [
+export const batchesColumns = (setBatchId, setBatchData) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -35,21 +35,6 @@ export const batchesColumns = () => [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          টাইটেল
-          <ChevronsUpDown size={12} className="ml-2" />
-        </Button>
-      );
-    },
-  },
-  {
     accessorKey: "passingYear",
     header: ({ column }) => {
       return (
@@ -65,7 +50,7 @@ export const batchesColumns = () => [
     },
   },
   {
-    accessorKey: "examinee",
+    accessorKey: "examineeNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -73,14 +58,14 @@ export const batchesColumns = () => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          পরিক্ষার্থী
+          পরিক্ষার্থীর সংখ্যা
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
     },
   },
   {
-    accessorKey: "joined",
+    accessorKey: "joinedNumber",
     header: ({ column }) => {
       return (
         <Button
@@ -88,7 +73,7 @@ export const batchesColumns = () => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          জয়েন হয়েছে
+          জয়েন সংখ্যা
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -108,31 +93,36 @@ export const batchesColumns = () => [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return format(new Date(row.getValue("createdAt")), "dd MMMM yyyy");
+    },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const batch = row.original;
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button variant="ghost" className="h-6 w-6 p-0">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              শিক্ষার্থী
+            <DropdownMenuItem>শিক্ষার্থী</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setBatchData(batch)}>
+              আপডেট
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              className="text-red-500 hover:!text-red-500"
+              onClick={() => setBatchId(batch._id)}
+            >
+              ডিলিট
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

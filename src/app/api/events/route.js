@@ -8,12 +8,19 @@ import { generateFilename } from "@/lib/helpers";
 
 // get all events
 export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const status = searchParams.get("status");
+  const query = {};
+  if (status) query.status = status;
   try {
     await connectDB();
-    const events = await eventModel.find().populate({
-      path: "author",
-      select: { name: true, _id: true, avatar: true },
-    });
+    const events = await eventModel
+      .find(query)
+      .populate({
+        path: "author",
+        select: { name: true, _id: true, avatar: true },
+      })
+      .sort({ createdAt: -1 });
     return NextResponse.json({ events }, { status: 200 });
   } catch (error) {
     console.error({ eventsGetError: error });

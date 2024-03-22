@@ -33,4 +33,8 @@ export const getYearRange = (start) => {
   return years;
 };
 
-export const timeCountDown = (toDate) => {};
+// truncate a string
+export const truncateString = (str, maxLength, ending = "...") => {
+  if (str.length <= maxLength) return str;
+  return str.slice(0, maxLength - ending.length) + ending;
+};

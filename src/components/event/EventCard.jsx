@@ -1,40 +1,26 @@
-import { Calendar, Clock } from "lucide-react";
-import Image from "next/image";
+import { Calendar } from "lucide-react";
 import Link from "next/link";
-import EventImage from "../../../public/iftar-2023.jpg";
+import { format } from "date-fns";
+import { truncateString } from "@/lib/utils";
+import Thumbnail from "../common/Thumbnail";
 
-export default function EventCard() {
+export default function EventCard({ event }) {
+  const { slug, thumbnail, title, date, description } = event;
   return (
-    <Link
-      href={
-        "events/ramadan-iftar-program-2024-with-all-teachers-staff-and-students"
-      }
-    >
-      <div className="border border-muted rounded-lg p-4 hover:outline outline-2 outline-primary outline-offset-2">
-        <Image
-          src={EventImage}
-          height={200}
-          alt="event"
-          className="rounded-md h-52 object-cover"
+    <Link href={`events/${slug}`}>
+      <div className="border border-muted rounded-lg p-2 hover:outline outline-2 outline-primary outline-offset-2 h-full">
+        <Thumbnail
+          thumbnail={thumbnail ? `/uploads/${thumbnail}` : ""}
+          alt={title}
         />
         <div>
           <ul className="flex items-center gap-4 my-3">
             <li className="flex items-center gap-2">
-              <Calendar size={16} /> 8 April, 2024
-            </li>
-            <li className="flex items-center gap-2">
-              <Clock size={16} /> 4.00 PM
+              <Calendar size={16} /> {format(new Date(date), "dd MMMM, yyyy")}
             </li>
           </ul>
-          <h2 className="text-lg font-semibold mb-2">
-            সকল শিক্ষক, কর্মচারী ও শিক্ষার্থীদের নিয়ে রমজানে ইফতার কর্মসূচি
-            2024
-          </h2>
-          <p>
-            প্রতি বছরের মত করে আল ইসলাহ ইসলামী একাডেমীর মাধ্যমিক পর্যায়ের
-            প্রাক্তন শিক্ষার্থীদের নিয়ে আসন্ন রমজানে ইফতার কর্মসূচি বাস্তবায়নের
-            উদ্যোগ নেওয়া হচ্ছে...
-          </p>
+          <h2 className="text-lg font-semibold mb-2">{title}</h2>
+          <p>{truncateString(description, 120)}</p>
         </div>
       </div>
     </Link>

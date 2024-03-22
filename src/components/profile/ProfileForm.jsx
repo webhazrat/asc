@@ -20,10 +20,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import { SERVER_URL, getbloodGroups, getYearRange } from "@/lib/utils";
-import ProfilePhoto from "./ProfilePhoto";
 import { useState } from "react";
 import { mutate } from "swr";
 import { format } from "date-fns";
+import CustomAvatar from "../common/CustomAvatar";
 export default function ProfileForm({ user, setIsOpen }) {
   const [selectedAvatar, setSelectedAvatar] = useState(
     user?.avatar ? `/uploads/avatars/${user?.avatar}` : ""
@@ -80,7 +80,7 @@ export default function ProfileForm({ user, setIsOpen }) {
       <form className="space-y-3" onSubmit={form.handleSubmit(handleEvent)}>
         <div className="flex gap-3">
           <div className="h-20 w-20 bg-gray-100 rounded-full">
-            <ProfilePhoto avatar={selectedAvatar} name={user?.name} />
+            <CustomAvatar avatar={selectedAvatar} name={user?.name} />
           </div>
           <FormField
             control={form.control}

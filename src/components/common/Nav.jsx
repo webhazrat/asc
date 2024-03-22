@@ -2,16 +2,16 @@
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { useUser } from "@/hooks/useUser";
 
 export default function Nav({ navs }) {
-  const { data: session } = useSession();
+  const { user } = useUser();
   const pathname = usePathname();
   return (
     <div className="flex flex-col gap-1">
       {navs.map((nav) => {
         if (
-          !session?.user.role.includes("Head") &&
+          !user?.role?.includes("Head") &&
           nav.href === "/profile/event-participants"
         ) {
           return;

@@ -57,8 +57,14 @@ export default function EventForm({ setIsModalOpen, event }) {
 
   // onChange thumbnail hanlder
   const handleThumbChange = (file) => {
-    const thumbnail = URL.createObjectURL(file);
-    setSelectedThumbnail(thumbnail);
+    if (file) {
+      const thumbnail = URL.createObjectURL(file);
+      setSelectedThumbnail(thumbnail);
+    } else {
+      setSelectedThumbnail(
+        event.thumbnail ? `/uploads/${event.thumbnail}` : ""
+      );
+    }
   };
 
   // create an event
@@ -76,7 +82,7 @@ export default function EventForm({ setIsModalOpen, event }) {
 
   // patch an event
   const updateEvent = async (formData) => {
-    const res = await fetch(`${SERVER_URL}/api/events`, {
+    const res = await fetch(`${SERVER_URL}/api/events/${event._id}`, {
       method: "PATCH",
       body: formData,
     });
@@ -114,36 +120,34 @@ export default function EventForm({ setIsModalOpen, event }) {
   return (
     <Form {...form}>
       <form className="space-y-3" onSubmit={form.handleSubmit(handleEvent)}>
-        <div>
-          {seletedThumbnail ? (
-            <Image
-              src={seletedThumbnail}
-              width={400}
-              height={192}
-              alt="blog"
-              className="mb-1 max-h-48 rounded-md object-contain w-auto mx-auto"
-            />
-          ) : null}
-          <FormField
-            control={form.control}
-            name="thumbnail"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>ইমেজ</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    onChange={(e) => {
-                      field.onChange(e.target.files[0]);
-                      handleThumbChange(e.target.files[0]);
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+        {seletedThumbnail ? (
+          <Image
+            src={seletedThumbnail}
+            width={400}
+            height={192}
+            alt="blog"
+            className="mb-1 rounded-md mx-auto"
           />
-        </div>
+        ) : null}
+        <FormField
+          control={form.control}
+          name="thumbnail"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>ইমেজ</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  onChange={(e) => {
+                    field.onChange(e.target.files[0]);
+                    handleThumbChange(e.target.files[0]);
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

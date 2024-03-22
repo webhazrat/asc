@@ -8,17 +8,17 @@ import {
 } from "../../ui/dialog";
 import { ScrollArea } from "../../ui/scroll-area";
 
-export default function EventModal({ children, isModalOpen, setIsModalOpen }) {
+export default function BatchModal({ children, isModalOpen, setIsModalOpen }) {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">ইভেন্ট সংযুক্ত করুন</Button>
+        <Button size="sm">ব্যাচ সংযুক্ত করুন</Button>
       </DialogTrigger>
       <DialogContent className="p-0">
         <ScrollArea className="max-h-[calc(100vh_-_100px)]">
           <div className="p-6 space-y-5">
             <DialogHeader>
-              <DialogTitle>ইভেন্ট</DialogTitle>
+              <DialogTitle>ব্যাচ</DialogTitle>
             </DialogHeader>
             {children}
           </div>

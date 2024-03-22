@@ -1,8 +1,8 @@
 "use client";
-import ProfilePhoto from "@/components/profile/ProfilePhoto";
 import ProfileEditModal from "@/components/profile/ProfileEditModal";
 import { useUser } from "@/hooks/useUser";
 import { format } from "date-fns";
+import CustomAvatar from "@/components/common/CustomAvatar";
 
 export default function Page() {
   const { user, isLoading } = useUser();
@@ -21,7 +21,7 @@ export default function Page() {
         <div className="flex gap-5 items-center">
           <div className="relative">
             <div className="w-[90px] h-[90px] border rounded-full">
-              <ProfilePhoto
+              <CustomAvatar
                 avatar={user?.avatar ? `/uploads/avatars/${user?.avatar}` : ""}
                 name={user?.name}
               />
