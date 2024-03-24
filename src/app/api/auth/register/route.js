@@ -16,7 +16,7 @@ export async function POST(req) {
     // existing student find
     const exist = await studentModel.findOne({ phone }).select("status");
 
-    if (exist.status === "Verified") {
+    if (exist?.status === "Verified") {
       return NextResponse.json(
         {
           field: "phone",
