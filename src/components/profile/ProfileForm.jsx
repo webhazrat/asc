@@ -24,7 +24,9 @@ import { useState } from "react";
 import { mutate } from "swr";
 import { format } from "date-fns";
 import CustomAvatar from "../common/CustomAvatar";
+import { useBatch } from "@/hooks/useBatch";
 export default function ProfileForm({ user, setIsOpen }) {
+  const { batches, isLoading, error } = useBatch();
   const [selectedAvatar, setSelectedAvatar] = useState(
     user?.avatar ? `/uploads/avatars/${user?.avatar}` : ""
   );
@@ -176,11 +178,15 @@ export default function ProfileForm({ user, setIsOpen }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {getYearRange(1998).map((year) => (
-                      <SelectItem key={year} value={year.toString()}>
-                        {year}
-                      </SelectItem>
-                    ))}
+                    {batches?.length > 0 &&
+                      batches?.map((batch) => (
+                        <SelectItem
+                          key={batch._id}
+                          value={batch.passingYear.toString()}
+                        >
+                          {batch.passingYear}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
 
@@ -280,7 +286,7 @@ export default function ProfileForm({ user, setIsOpen }) {
           )}
         />
 
-        <DialogFooter>
+        <div className="fixed bottom-0 left-0 bg-background border-t border-muted w-full py-2 px-6 rounded-b-lg flex justify-end">
           <Button
             type="submit"
             className="flex items-center gap-2"
@@ -289,7 +295,7 @@ export default function ProfileForm({ user, setIsOpen }) {
             {isSubmitting && <Loader size={18} className="animate-spin" />}
             আপডেট
           </Button>
-        </DialogFooter>
+        </div>
       </form>
     </Form>
   );

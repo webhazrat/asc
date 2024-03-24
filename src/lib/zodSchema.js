@@ -24,6 +24,21 @@ export const registerSchema = z.object({
   }),
 });
 
+// profile update validation
+// export const profileSchema = z.object({
+//   name: z.string().min(1, {
+//     message: "নাম ইনপুট করুন",
+//   }),
+//   passingYear: z
+//     .string()
+//     .refine((value) => value >= 1998 && value < currentYear, {
+//       message: `পাশের সাল 1998 এবং ${currentYear - 1} এর মধ্যে হতে হবে`,
+//     }),
+//   bloodGroup: z.string().refine((value) => getbloodGroups().includes(value), {
+//     message: `সঠিক ব্লাড গ্রুপ ইনপুট করুন`,
+//   }),
+// });
+
 // otp verify server validation
 export const otpSchema = z.object({
   otp: z

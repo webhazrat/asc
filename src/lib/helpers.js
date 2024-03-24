@@ -1,4 +1,4 @@
-import { unlink } from "fs/promises";
+import { unlink, access } from "fs/promises";
 import crypto from "crypto";
 
 // generate and otp
@@ -20,6 +20,7 @@ export const generateFilename = (originalFilename) => {
 // unlink a file
 export const deleteFile = async (filePath) => {
   try {
+    await access(filePath);
     await unlink(filePath);
     return Promise.resolve("File deleted");
   } catch (error) {

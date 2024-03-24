@@ -13,16 +13,10 @@ export async function PATCH(req, { params }) {
     await checkAdmin();
     await connectDB();
     const formData = await req.formData();
-    let {
-      thumbnail,
-      title,
-      slug,
-      description,
-      feeDetail,
-      location,
-      date,
-      status,
-    } = Object.fromEntries(formData);
+    let { thumbnail, title, slug, description, fees, location, date, status } =
+      Object.fromEntries(formData);
+
+    fees = JSON.parse(fees);
 
     const eventExist = await eventModel.countDocuments({
       slug,
@@ -54,13 +48,13 @@ export async function PATCH(req, { params }) {
       title,
       slug,
       description,
-      feeDetail,
+      fees,
       location,
       date,
       status,
     });
 
-    if (event?.thumbnail) {
+    if (thumbnail.name && event?.thumbnail) {
       await deleteFile(`./public/uploads/${event.thumbnail}`);
     }
     return NextResponse.json(

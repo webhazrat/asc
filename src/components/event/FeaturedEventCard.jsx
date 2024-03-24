@@ -1,14 +1,17 @@
-import Image from "next/image";
 import { Button } from "../ui/button";
-import { Banknote, Calendar, MapPin, Plus } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Banknote, Calendar, MapPin } from "lucide-react";
 import Link from "next/link";
 import EventCountDown from "./EventCountDown";
 import { format } from "date-fns";
 import { truncateString } from "@/lib/utils";
 import Thumbnail from "../common/Thumbnail";
+import ParticipateAction from "./ParticipateAction";
+import ParticipateAvatars from "./PartcipateAvatars";
 
 export default function FeaturedEventCard({ event }) {
+  const feesDetail =
+    event?.fees?.length > 0 &&
+    event?.fees.map((fee) => `${fee.category} - ${fee.amount}`);
   return (
     <div className="grid md:grid-cols-2 items-center p-4 md:p-8 gap-10 relative border border-muted rounded-2xl backdrop-filter backdrop-blur-lg">
       <div className="relative">
@@ -35,7 +38,7 @@ export default function FeaturedEventCard({ event }) {
             <li className="flex gap-2">
               <Banknote size={16} className="mt-1 shrink-0" />
               <span>
-                {event?.feeDetail}
+                ফি : {feesDetail.join(", ")}
                 <span className="block text-primary">
                   (ব্যাচ প্রতিনিধির হাতে জমা দিতে হবে)
                 </span>
@@ -46,41 +49,12 @@ export default function FeaturedEventCard({ event }) {
         <p>{truncateString(event?.description, 274)}</p>
         <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between">
           <div className="flex items-center">
-            <Button>অংশগ্রহন করুন</Button>
+            <ParticipateAction eventId={event?._id} />
             <Button variant="link" asChild>
               <Link href={`events/${event?.slug}`}>বিস্তারিত দেখুন</Link>
             </Button>
           </div>
-          <div className="flex -space-x-3">
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarImage
-                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=50&h=50&auto=format&fit=crop"
-                alt="@shadcn"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarImage
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=50&h=50&auto=format&fit=crop"
-                alt="@shadcn"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <Avatar>
-              <AvatarImage
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=50&h=50&auto=format&fit=crop"
-                alt="@shadcn"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <Button variant="outline" size="icon" className="rounded-full z-10">
-              200 <Plus size={10} />
-            </Button>
-          </div>
+          <ParticipateAvatars eventId={event?._id} />
         </div>
       </div>
     </div>

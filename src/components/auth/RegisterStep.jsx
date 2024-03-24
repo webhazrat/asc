@@ -18,8 +18,10 @@ import {
 import { getYearRange, getbloodGroups } from "@/lib/utils";
 import Link from "next/link";
 import { Loader } from "lucide-react";
+import { useBatch } from "@/hooks/useBatch";
 
 export default function RegisterStep({ form, onSubmit }) {
+  const { batches, isLoading } = useBatch();
   const {
     formState: { errors, isSubmitting },
   } = form;
@@ -92,11 +94,15 @@ export default function RegisterStep({ form, onSubmit }) {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {getYearRange(1998).map((year) => (
-                      <SelectItem key={year} value={year.toString()}>
-                        {year}
-                      </SelectItem>
-                    ))}
+                    {batches?.length > 0 &&
+                      batches?.map((batch) => (
+                        <SelectItem
+                          key={batch._id}
+                          value={batch.passingYear.toString()}
+                        >
+                          {batch.passingYear}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />

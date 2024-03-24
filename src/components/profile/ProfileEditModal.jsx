@@ -20,7 +20,7 @@ export default function ProfileEditModal({ user }) {
       </DialogTrigger>
       <DialogContent className="p-0">
         <ScrollArea className="max-h-[calc(100vh_-_100px)]">
-          <div className="p-6 space-y-5">
+          <div className="p-6 pb-20 space-y-5 relative">
             <DialogHeader>
               <DialogTitle>প্রোফাইল</DialogTitle>
             </DialogHeader>

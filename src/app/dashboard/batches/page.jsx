@@ -5,7 +5,8 @@ import BatchFrom from "@/components/dashbaord/batch/BatchForm";
 import BatchModal from "@/components/dashbaord/batch/BatchModal";
 import { batchesColumns } from "@/components/datatable/Columns";
 import { DataTable } from "@/components/datatable/DataTable";
-import { fetcher } from "@/lib/utils";
+import { toast } from "@/components/ui/use-toast";
+import { SERVER_URL, fetcher } from "@/lib/utils";
 import { useState } from "react";
 import useSWR from "swr";
 
@@ -14,7 +15,30 @@ export default function Page() {
   const [batchData, setBatchData] = useState(false);
   const { data, isLoading, error, mutate } = useSWR("/api/batches", fetcher);
 
-  const handleBatchDelete = () => {};
+  // delete a batch
+  const deleteBatch = async (id) => {
+    const res = await fetch(`${SERVER_URL}/api/batches/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
+    }
+    return res.json();
+  };
+
+  const handleBatchDelete = async () => {
+    try {
+      const res = await deleteBatch(batchId);
+      mutate();
+      setBatchId(false);
+    } catch (error) {
+      console.error({ deleteBatchError: error });
+      toast({
+        description: error.message,
+      });
+    }
+  };
 
   return (
     <>

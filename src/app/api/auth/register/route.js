@@ -1,5 +1,5 @@
 import connectDB from "@/lib/connect";
-import { generateOTP } from "@/lib/helpers";
+import { generateOTP, sendSMS } from "@/lib/helpers";
 import { registerSchema } from "@/lib/zodSchema";
 import otpModel from "@/models/otpModel";
 import studentModel from "@/models/studentModel";
@@ -29,7 +29,21 @@ export async function POST(req) {
     // otp generate and store to db and send to phone
     const otp = generateOTP();
     await otpModel.updateOne({ phone }, { $set: { otp } }, { upsert: true });
-    // sendToPhone()
+
+    // send otp to phone also
+    const send = await sendSMS(
+      `88${phone}`,
+      `Your phone verification OTP is ${otp}`
+    );
+    if (send.code !== "ok") {
+      return NextResponse.json(
+        {
+          field: "phone",
+          message: "দুঃখিত! মোবাইল নাম্বারটি চেক করে আবার চেষ্টা করুন",
+        },
+        { status: 400 }
+      );
+    }
 
     // student create
     const hashedPassword = hashSync(password, 10);

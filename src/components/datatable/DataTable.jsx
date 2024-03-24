@@ -61,7 +61,7 @@ export function DataTable({
     state: {
       sorting,
       columnFilters,
-      columnVisibility,
+      columnVisibility: columnVisible,
       rowSelection,
     },
   });
@@ -98,7 +98,7 @@ export function DataTable({
         <div className="flex-shrink-0">
           <Input
             type="text"
-            placeholder="ব্যাচ সার্চ করুন..."
+            placeholder="সার্চ করুন..."
             className="text-sm"
             // value={inputValue}
             // onChange={(e) => setInputValue(e.target.value)}

@@ -1,12 +1,12 @@
 import HeaderNavigation from "@/components/common/HeaderNavigation";
-import Batches from "@/components/batch/Batches";
+import BatchesList from "@/components/batch/BatchesList";
 import Footer from "@/components/common/Footer";
 
 export default function Page() {
   return (
     <>
       <HeaderNavigation />
-      <Batches />
+      <BatchesList />
       <Footer />
     </>
   );

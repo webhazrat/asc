@@ -5,7 +5,7 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-export const SERVER_URL = "http://localhost:3000";
+export const SERVER_URL = "https://aiiasc.vercel.app/";
 
 // swr fetcher
 export const fetcher = async (...args) => {
@@ -21,16 +21,6 @@ export const firstLetter = (string) => {
 // blood groups array
 export const getbloodGroups = () => {
   return ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"];
-};
-
-// year range from start to current - 1
-export const getYearRange = (start) => {
-  const currentYear = new Date().getFullYear();
-  const years = [];
-  for (let year = start; year <= currentYear - 1; year++) {
-    years.push(year);
-  }
-  return years;
 };
 
 // truncate a string

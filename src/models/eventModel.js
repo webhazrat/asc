@@ -6,7 +6,13 @@ const eventSchema = new mongoose.Schema(
     title: { type: String, required: true },
     slug: { type: String, required: true },
     description: String,
-    feeDetail: String,
+    fees: [
+      {
+        _id: false,
+        category: String,
+        amount: Number,
+      },
+    ],
     location: String,
     date: Date,
     author: {

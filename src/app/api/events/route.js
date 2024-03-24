@@ -34,16 +34,10 @@ export async function POST(req) {
     const session = await checkAdmin();
     await connectDB();
     const formData = await req.formData();
-    let {
-      thumbnail,
-      title,
-      slug,
-      description,
-      feeDetail,
-      location,
-      date,
-      status,
-    } = Object.fromEntries(formData);
+    let { thumbnail, title, slug, description, fees, location, date, status } =
+      Object.fromEntries(formData);
+
+    fees = JSON.parse(fees);
 
     const event = await eventModel.countDocuments({ slug });
     if (event) {
@@ -71,7 +65,7 @@ export async function POST(req) {
       title,
       slug,
       description,
-      feeDetail,
+      fees,
       location,
       date,
       status,

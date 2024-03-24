@@ -9,7 +9,7 @@ export default function Page() {
   const { data, isLoading, error } = useSWR(`/api/students`, fetcher);
   return (
     <>
-      <Title title="শিক্ষার্থী" />
+      <Title title="অংশগ্রহণকারী শিক্ষার্থী" />
       <DataTable
         columns={studentsColumns()}
         data={data?.students}

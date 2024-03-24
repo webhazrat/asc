@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "../../ui/button";
 import { DialogFooter } from "../../ui/dialog";
 import {
@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "../../ui/form";
 import { Input } from "../../ui/input";
-import { Loader } from "lucide-react";
+import { Loader, Minus } from "lucide-react";
 import { Textarea } from "../../ui/textarea";
 import {
   Select,
@@ -43,7 +43,7 @@ export default function EventForm({ setIsModalOpen, event }) {
           title: "",
           slug: "",
           description: "",
-          feeDetail: "",
+          fees: [{ category: "", amount: "" }],
           location: "",
           date: "",
           status: "",
@@ -51,9 +51,16 @@ export default function EventForm({ setIsModalOpen, event }) {
   });
 
   const {
+    control,
+    unregister,
     formState: { isSubmitting },
     setError,
   } = form;
+
+  const fees = useFieldArray({
+    control,
+    name: "fees",
+  });
 
   // onChange thumbnail hanlder
   const handleThumbChange = (file) => {
@@ -96,9 +103,13 @@ export default function EventForm({ setIsModalOpen, event }) {
   // hanlde form submit
   const handleEvent = async (data) => {
     const formData = new FormData();
-    for (const key in data) {
-      formData.append(key, data[key]);
+    for (let key in data) {
+      const value = Array.isArray(data[key])
+        ? JSON.stringify(data[key])
+        : data[key];
+      formData.append(key, value);
     }
+
     try {
       const res = event._id
         ? await updateEvent(formData)
@@ -130,7 +141,7 @@ export default function EventForm({ setIsModalOpen, event }) {
           />
         ) : null}
         <FormField
-          control={form.control}
+          control={control}
           name="thumbnail"
           render={({ field }) => (
             <FormItem>
@@ -150,7 +161,7 @@ export default function EventForm({ setIsModalOpen, event }) {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name="title"
           render={({ field }) => (
             <FormItem>
@@ -164,7 +175,7 @@ export default function EventForm({ setIsModalOpen, event }) {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name="slug"
           render={({ field }) => (
             <FormItem>
@@ -178,7 +189,7 @@ export default function EventForm({ setIsModalOpen, event }) {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name="description"
           render={({ field }) => (
             <FormItem>
@@ -191,22 +202,64 @@ export default function EventForm({ setIsModalOpen, event }) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="feeDetail"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>ফি বিবরণ</FormLabel>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FormItem>
+          <FormLabel>ফি</FormLabel>
+          {fees.fields.map((field, index) => {
+            return (
+              <div key={field.id} className="flex gap-2">
+                <FormField
+                  control={control}
+                  name={`fees.${index}.category`}
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input type="text" placeholder="ক্যাটেগরি" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name={`fees.${index}.amount`}
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <Input type="number" placeholder="পরিমাণ" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            );
+          })}
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fees.append({ category: "", amount: 0 })}
+            >
+              আরো
+            </Button>
+
+            {fees.fields.length > 1 && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  fees.remove(fees.fields.length - 1);
+                  unregister(`fees.${fees.fields.length - 1}`);
+                }}
+              >
+                <Minus size={10} />
+              </Button>
+            )}
+          </div>
+        </FormItem>
 
         <FormField
-          control={form.control}
+          control={control}
           name="location"
           render={({ field }) => (
             <FormItem>
@@ -221,7 +274,7 @@ export default function EventForm({ setIsModalOpen, event }) {
 
         <div className="grid sm:grid-cols-2 gap-3">
           <FormField
-            control={form.control}
+            control={control}
             name="date"
             render={({ field }) => (
               <FormItem>
@@ -235,7 +288,7 @@ export default function EventForm({ setIsModalOpen, event }) {
           />
 
           <FormField
-            control={form.control}
+            control={control}
             name="status"
             render={({ field }) => (
               <FormItem>

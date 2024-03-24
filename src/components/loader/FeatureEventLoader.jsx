@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export default function FeaturedEventLoader() {
   return (
-    <div className="grid md:grid-cols-2 gap-10">
+    <div className="grid md:grid-cols-2 gap-10 p-6 border border-muted rounded-lg">
       <Skeleton className="h-60 rounded-lg mb-3" />
       <div className="space-y-4">
         <Skeleton className="h-6" />

@@ -6,12 +6,11 @@ import { AlignRight } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import NavItems from "./NavItems";
 import Logo from "../../../public/logo.svg";
-
-import { useSession } from "next-auth/react";
 import UserDropdown from "./UserDropdown";
+import { useUser } from "@/hooks/useUser";
 
 export default function HeaderNavigation() {
-  const { data: session } = useSession();
+  const { user, isLoading, error } = useUser();
   return (
     <div className="py-3 border-b border-muted w-fullbackdrop-filter backdrop-blur-lg bg-white/60 z-20 h-16">
       <div className="container flex justify-between items-center h-full">
@@ -33,7 +32,7 @@ export default function HeaderNavigation() {
             </SheetContent>
           </Sheet>
 
-          {session ? (
+          {user ? (
             <UserDropdown />
           ) : (
             <>
@@ -49,7 +48,7 @@ export default function HeaderNavigation() {
 
         <div className="hidden md:flex items-center gap-2">
           <NavItems />
-          {session ? (
+          {user ? (
             <UserDropdown />
           ) : (
             <>
