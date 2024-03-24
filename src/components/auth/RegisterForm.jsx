@@ -40,7 +40,6 @@ export default function RegisterForm() {
         description: response?.message,
       });
     } catch (error) {
-      console.log({ RegisterFormError: error });
       setError(error?.field || "common", {
         type: "server",
         message: error.message,

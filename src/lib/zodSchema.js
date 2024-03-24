@@ -1,43 +1,24 @@
 import { z } from "zod";
 import { getbloodGroups } from "./utils";
 
-const currentYear = new Date().getFullYear();
-
 // register data validation
 export const registerSchema = z.object({
   name: z.string().min(1, {
     message: "নাম ইনপুট করুন",
   }),
-  phone: z.string().regex(/^(?:\+?88)?01[3-9]\d{8}$/, {
+  phone: z.string().regex(/^01[3-9]\d{8}$/, {
     message: "সঠিক মোবাইল নাম্বার ইনপুট করুন",
   }),
   password: z.string().min(6, {
     message: "পাসওয়ার্ড সর্বনিম্ন ছয় সংখ্যার হতে হবে",
   }),
-  passingYear: z
-    .string()
-    .refine((value) => value >= 1998 && value < currentYear, {
-      message: `পাশের সাল 1998 এবং ${currentYear - 1} এর মধ্যে হতে হবে`,
-    }),
+  passingYear: z.string().min(1, {
+    message: "পাশের সালে সিলেক্ট করুন",
+  }),
   bloodGroup: z.string().refine((value) => getbloodGroups().includes(value), {
     message: `সঠিক ব্লাড গ্রুপ ইনপুট করুন`,
   }),
 });
-
-// profile update validation
-// export const profileSchema = z.object({
-//   name: z.string().min(1, {
-//     message: "নাম ইনপুট করুন",
-//   }),
-//   passingYear: z
-//     .string()
-//     .refine((value) => value >= 1998 && value < currentYear, {
-//       message: `পাশের সাল 1998 এবং ${currentYear - 1} এর মধ্যে হতে হবে`,
-//     }),
-//   bloodGroup: z.string().refine((value) => getbloodGroups().includes(value), {
-//     message: `সঠিক ব্লাড গ্রুপ ইনপুট করুন`,
-//   }),
-// });
 
 // otp verify server validation
 export const otpSchema = z.object({

@@ -6,6 +6,7 @@ import studentModel from "@/models/studentModel";
 import { hashSync } from "bcryptjs";
 import { NextResponse } from "next/server";
 
+// register an account
 export async function POST(req) {
   try {
     const data = await req.json();
@@ -16,7 +17,7 @@ export async function POST(req) {
     // existing student find
     const exist = await studentModel.findOne({ phone }).select("status");
 
-    if (exist.status === "Verified") {
+    if (exist?.status === "Verified") {
       return NextResponse.json(
         {
           field: "phone",
@@ -35,6 +36,7 @@ export async function POST(req) {
       `88${phone}`,
       `Your phone verification OTP is ${otp}`
     );
+    console.log(`88${phone}`, `Your phone verification OTP is ${otp}`);
     if (send.code !== "ok") {
       return NextResponse.json(
         {

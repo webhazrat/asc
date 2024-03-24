@@ -3,7 +3,7 @@ import { SERVER_URL } from "@/lib/utils";
 export const useRegister = () => {
   const register = async (formData) => {
     try {
-      const result = await fetch(`${SERVER_URL}/api/auth/register`, {
+      const res = await fetch(`${SERVER_URL}/api/auth/register`, {
         method: "POST",
         body: JSON.stringify(formData),
         headers: {
@@ -11,11 +11,11 @@ export const useRegister = () => {
         },
       });
 
-      const response = await result.json();
-      if (!result.ok) {
-        throw response.error;
+      const result = await res.json();
+      if (!res.ok) {
+        throw result;
       }
-      return response;
+      return result;
     } catch (error) {
       throw error;
     }
@@ -23,18 +23,18 @@ export const useRegister = () => {
 
   const verify = async (formData) => {
     try {
-      const result = await fetch(`${SERVER_URL}/api/auth/verify`, {
+      const res = await fetch(`${SERVER_URL}/api/auth/verify`, {
         method: "POST",
         body: JSON.stringify(formData),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const response = await result.json();
-      if (!result.ok) {
-        throw response.error;
+      const result = await res.json();
+      if (!res.ok) {
+        throw result;
       }
-      return response;
+      return result;
     } catch (error) {
       throw error;
     }
