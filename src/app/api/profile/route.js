@@ -6,6 +6,7 @@ import { writeFile } from "fs/promises";
 import { NextResponse } from "next/server";
 import { join } from "path";
 
+// profile update
 export async function PATCH(req) {
   try {
     const session = await checkLogin();
@@ -13,7 +14,6 @@ export async function PATCH(req) {
     const formData = await req.formData();
     let {
       avatar,
-      prevAvatar,
       name,
       dob,
       bloodGroup,
@@ -26,16 +26,15 @@ export async function PATCH(req) {
       designation,
     } = Object.fromEntries(formData);
 
+    let parsedAvatar = avatar;
+
     if (avatar.name) {
       const avatarName = generateFilename(avatar.name);
       const bytes = await avatar.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const path = join("", "public/uploads/avatars", avatarName);
+      const path = join(process.cwd(), "public/uploads/avatars", avatarName);
       await writeFile(path, buffer);
-      avatar = avatarName;
-
-      if (prevAvatar)
-        await deleteFile(`./public/uploads/avatars/${prevAvatar}`);
+      parsedAvatar = avatarName;
     }
 
     const student = await studentModel
@@ -43,7 +42,7 @@ export async function PATCH(req) {
         { _id: session.user._id },
         {
           $set: {
-            avatar,
+            avatar: parsedAvatar,
             name,
             dob,
             bloodGroup,
@@ -55,10 +54,19 @@ export async function PATCH(req) {
             professionalInstitute,
             designation,
           },
-        },
-        { new: true }
+        }
       )
       .select("-password");
+
+    if (avatar?.name && student?.avatar) {
+      const path = join(
+        process.cwd(),
+        "public/uploads/avatars",
+        student?.avatar
+      );
+      console.log({ path });
+      await deleteFile(path);
+    }
 
     return NextResponse.json(
       { title: "সফল!", message: "প্রোফাইল তথ্য সফলভাবে আপডেট হয়েছে" },

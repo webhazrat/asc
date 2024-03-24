@@ -1,7 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import { DialogFooter } from "../ui/dialog";
 import {
   Form,
   FormControl,
@@ -19,12 +18,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { SERVER_URL, getbloodGroups, getYearRange } from "@/lib/utils";
+import { SERVER_URL, getbloodGroups } from "@/lib/utils";
 import { useState } from "react";
 import { mutate } from "swr";
 import { format } from "date-fns";
 import CustomAvatar from "../common/CustomAvatar";
 import { useBatch } from "@/hooks/useBatch";
+import { toast } from "../ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { profileSchema } from "@/lib/zodSchema";
 export default function ProfileForm({ user, setIsOpen }) {
   const { batches, isLoading, error } = useBatch();
   const [selectedAvatar, setSelectedAvatar] = useState(
@@ -32,6 +34,7 @@ export default function ProfileForm({ user, setIsOpen }) {
   );
 
   const form = useForm({
+    resolver: zodResolver(profileSchema),
     defaultValues: {
       ...user,
       dob: user?.dob ? format(new Date(user.dob), "yyyy-MM-dd") : "",
@@ -44,7 +47,7 @@ export default function ProfileForm({ user, setIsOpen }) {
 
   // handle avatar change
   const handleAvatarChange = (file) => {
-    const avatar = URL.createObjectURL(file);
+    const avatar = file ? URL.createObjectURL(file) : "";
     setSelectedAvatar(avatar);
   };
 
@@ -63,17 +66,22 @@ export default function ProfileForm({ user, setIsOpen }) {
   // handle submit an event
   const handleEvent = async (data) => {
     const formData = new FormData();
-    formData.append("prevAvatar", user.avatar);
     for (const key in data) {
       formData.append(key, data[key]);
     }
-
     try {
       const res = await updateUser(formData);
       mutate(`/api/profile/${user._id}`);
       setIsOpen(false);
+      toast({
+        description: res?.message,
+      });
     } catch (error) {
       console.error({ userUpdateError: error });
+      toast({
+        title: "Error!",
+        description: error.message,
+      });
     }
   };
 
@@ -87,6 +95,7 @@ export default function ProfileForm({ user, setIsOpen }) {
           <FormField
             control={form.control}
             name="avatar"
+            defaultValue=""
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormLabel>ইমেজ</FormLabel>
@@ -108,6 +117,7 @@ export default function ProfileForm({ user, setIsOpen }) {
         <FormField
           control={form.control}
           name="name"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>নাম</FormLabel>
@@ -123,6 +133,7 @@ export default function ProfileForm({ user, setIsOpen }) {
           <FormField
             control={form.control}
             name="dob"
+            defaultValue=""
             render={({ field }) => (
               <FormItem>
                 <FormLabel>জন্ম তারিখ</FormLabel>
@@ -136,6 +147,7 @@ export default function ProfileForm({ user, setIsOpen }) {
           <FormField
             control={form.control}
             name="bloodGroup"
+            defaultValue=""
             render={({ field }) => (
               <FormItem>
                 <FormLabel>রক্তের গ্রুপ</FormLabel>
@@ -165,6 +177,7 @@ export default function ProfileForm({ user, setIsOpen }) {
           <FormField
             control={form.control}
             name="passingYear"
+            defaultValue=""
             render={({ field }) => (
               <FormItem>
                 <FormLabel>এসএসসি পাশের সাল</FormLabel>
@@ -199,6 +212,7 @@ export default function ProfileForm({ user, setIsOpen }) {
         <FormField
           control={form.control}
           name="presentAddress"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>বর্তমান ঠিকানা</FormLabel>
@@ -214,6 +228,7 @@ export default function ProfileForm({ user, setIsOpen }) {
         <FormField
           control={form.control}
           name="permanentAddress"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>স্থায়ী ঠিকানা</FormLabel>
@@ -229,6 +244,7 @@ export default function ProfileForm({ user, setIsOpen }) {
         <FormField
           control={form.control}
           name="qualification"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>সর্বশেষ শিক্ষাগত যোগ্যতা</FormLabel>
@@ -244,6 +260,7 @@ export default function ProfileForm({ user, setIsOpen }) {
         <FormField
           control={form.control}
           name="institute"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>প্রতিষ্ঠানের নাম</FormLabel>
@@ -259,6 +276,7 @@ export default function ProfileForm({ user, setIsOpen }) {
         <FormField
           control={form.control}
           name="professionalInstitute"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>কর্মরত প্রতিষ্ঠান</FormLabel>
@@ -274,6 +292,7 @@ export default function ProfileForm({ user, setIsOpen }) {
         <FormField
           control={form.control}
           name="designation"
+          defaultValue=""
           render={({ field }) => (
             <FormItem>
               <FormLabel>পদবি </FormLabel>

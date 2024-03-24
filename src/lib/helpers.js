@@ -22,9 +22,9 @@ export const deleteFile = async (filePath) => {
   try {
     await access(filePath);
     await unlink(filePath);
-    return Promise.resolve("File deleted");
+    return "File deleted";
   } catch (error) {
-    return Promise.reject(error);
+    return "File does not exist";
   }
 };
 

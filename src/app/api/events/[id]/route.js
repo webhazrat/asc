@@ -54,9 +54,12 @@ export async function PATCH(req, { params }) {
       status,
     });
 
+    console.log({ event });
+
     if (thumbnail.name && event?.thumbnail) {
       await deleteFile(`./public/uploads/${event.thumbnail}`);
     }
+
     return NextResponse.json(
       { title: "সফল!", message: "ইভেন্ট সফলভাবে আপডেট হয়েছে" },
       { status: 200 }
