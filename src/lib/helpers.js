@@ -1,5 +1,6 @@
-import { unlink, access } from "fs/promises";
+import { unlink, access, writeFile, mkdir } from "fs/promises";
 import crypto from "crypto";
+import { join } from "path";
 
 // generate and otp
 export const generateOTP = () => {
@@ -17,14 +18,35 @@ export const generateFilename = (originalFilename) => {
   return newFilename;
 };
 
-// unlink a file
-export const deleteFile = async (filePath) => {
+// create a file
+export const createFile = async (avatar, folder) => {
   try {
-    await access(filePath);
+    const folderPath = join(process.cwd(), folder);
+    const avatarName = generateFilename(avatar.name);
+    const bytes = await avatar.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    try {
+      await access(folderPath);
+    } catch (error) {
+      await mkdir(folderPath, { recursive: true });
+    }
+    const path = join(folderPath, avatarName);
+    await writeFile(path, buffer);
+    return avatarName;
+  } catch (error) {
+    return error;
+  }
+};
+
+// unlink a file
+export const deleteFile = async (avatarName, folder) => {
+  try {
+    const folderPath = join(process.cwd(), folder);
+    const filePath = join(folderPath, avatarName);
     await unlink(filePath);
     return "File deleted";
   } catch (error) {
-    return "File does not exist";
+    return error;
   }
 };
 

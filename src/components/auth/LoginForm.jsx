@@ -19,8 +19,11 @@ import { signIn } from "next-auth/react";
 import { Loader } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
+import { useState } from "react";
+import ShowPassword from "../common/showPassword";
 
 export default function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -81,8 +84,10 @@ export default function LoginForm() {
                     <FormLabel>মোবাইল নাম্বার</FormLabel>
                     <FormControl>
                       <Input type="text" {...field} />
-                    </FormControl>{" "}
-                    <FormDescription></FormDescription>
+                    </FormControl>
+                    <FormDescription>
+                      মোবাইল নাম্বার 11 ডিজিটের ইংরেজিতে হতে হবে
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -95,9 +100,21 @@ export default function LoginForm() {
                   <FormItem>
                     <FormLabel>পাসওয়ার্ড</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>{" "}
-                    <FormDescription></FormDescription>
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          {...field}
+                          className="pr-10"
+                        />
+                        <ShowPassword
+                          setShowPassword={setShowPassword}
+                          showPassword={showPassword}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormDescription>
+                      পাসওয়ার্ড সর্বনিম্ন ছয় সংখ্যার হতে হবে
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

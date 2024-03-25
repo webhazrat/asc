@@ -1,13 +1,12 @@
 import { checkLogin } from "@/lib/apiAuth";
 import connectDB from "@/lib/connect";
-import { deleteFile, generateFilename } from "@/lib/helpers";
+import { createFile, deleteFile } from "@/lib/helpers";
 import studentModel from "@/models/studentModel";
-import { writeFile } from "fs/promises";
 import { NextResponse } from "next/server";
-import { join } from "path";
 
 // profile update
 export async function PATCH(req) {
+  const folder = "public/uploads/avatars";
   try {
     const session = await checkLogin();
     await connectDB();
@@ -29,12 +28,7 @@ export async function PATCH(req) {
     let parsedAvatar = avatar;
 
     if (avatar.name) {
-      const avatarName = generateFilename(avatar.name);
-      const bytes = await avatar.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const path = join(process.cwd(), "public/uploads/avatars", avatarName);
-      await writeFile(path, buffer);
-      parsedAvatar = avatarName;
+      parsedAvatar = await createFile(avatar, folder);
     }
 
     const student = await studentModel
@@ -59,13 +53,7 @@ export async function PATCH(req) {
       .select("-password");
 
     if (avatar?.name && student?.avatar) {
-      const path = join(
-        process.cwd(),
-        "public/uploads/avatars",
-        student?.avatar
-      );
-      console.log({ path });
-      await deleteFile(path);
+      await deleteFile(student?.avatar, folder);
     }
 
     return NextResponse.json(

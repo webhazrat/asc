@@ -20,8 +20,11 @@ import { getYearRange, getbloodGroups } from "@/lib/utils";
 import Link from "next/link";
 import { Loader } from "lucide-react";
 import { useBatch } from "@/hooks/useBatch";
+import ShowPassword from "../common/showPassword";
+import { useState } from "react";
 
 export default function RegisterStep({ form, onSubmit }) {
+  const [showPassword, setShowPassword] = useState(false);
   const { batches, isLoading } = useBatch();
   const {
     formState: { errors, isSubmitting },
@@ -75,8 +78,21 @@ export default function RegisterStep({ form, onSubmit }) {
               <FormItem>
                 <FormLabel>পাসওয়ার্ড</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      {...field}
+                      className="pr-10"
+                    />
+                    <ShowPassword
+                      showPassword={showPassword}
+                      setShowPassword={setShowPassword}
+                    />
+                  </div>
                 </FormControl>
+                <FormDescription>
+                  পাসওয়ার্ড সর্বনিম্ন ছয় সংখ্যার হতে হবে
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
