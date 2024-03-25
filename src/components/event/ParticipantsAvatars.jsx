@@ -19,7 +19,7 @@ export default function ParticipantsAvatars({ eventId }) {
 
   return (
     <div className="flex -space-x-3">
-      {participants.length > 0 &&
+      {participants?.length > 0 &&
         participants.map((participant, index) => {
           const { student } = participant;
           if (index < 4) {
