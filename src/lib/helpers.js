@@ -1,4 +1,4 @@
-import { unlink, access, writeFile, mkdir } from "fs/promises";
+import { unlink, writeFile } from "fs/promises";
 import crypto from "crypto";
 import { join } from "path";
 
@@ -25,11 +25,6 @@ export const createFile = async (avatar, folder) => {
     const avatarName = generateFilename(avatar.name);
     const bytes = await avatar.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    try {
-      await access(folderPath);
-    } catch (error) {
-      await mkdir(folderPath, { recursive: true });
-    }
     const path = join(folderPath, avatarName);
     await writeFile(path, buffer);
     return avatarName;
