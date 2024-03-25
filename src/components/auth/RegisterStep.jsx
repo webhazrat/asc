@@ -10,6 +10,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -59,6 +60,9 @@ export default function RegisterStep({ form, onSubmit }) {
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
+                <FormDescription>
+                  মোবাইল নাম্বার 11 ডিজিটের ইংরেজিতে হতে হবে
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
