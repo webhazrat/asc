@@ -16,12 +16,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { getYearRange, getbloodGroups } from "@/lib/utils";
+import { getbloodGroups } from "@/lib/utils";
 import Link from "next/link";
 import { Loader } from "lucide-react";
 import { useBatch } from "@/hooks/useBatch";
-import ShowPassword from "../common/showPassword";
 import { useState } from "react";
+import ShowPasswordAction from "../common/ShowPasswordAction";
 
 export default function RegisterStep({ form, onSubmit }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -84,7 +84,7 @@ export default function RegisterStep({ form, onSubmit }) {
                       {...field}
                       className="pr-10"
                     />
-                    <ShowPassword
+                    <ShowPasswordAction
                       showPassword={showPassword}
                       setShowPassword={setShowPassword}
                     />

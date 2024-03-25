@@ -1,7 +1,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../ui/button";
 
-export default function ShowPassword({ showPassword, setShowPassword }) {
+export default function ShowPasswordAction({ showPassword, setShowPassword }) {
   return (
     <Button
       type="button"

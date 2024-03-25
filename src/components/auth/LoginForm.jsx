@@ -20,7 +20,7 @@ import { Loader } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import { useState } from "react";
-import ShowPassword from "../common/showPassword";
+import ShowPasswordAction from "../common/ShowPasswordAction";
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -106,7 +106,7 @@ export default function LoginForm() {
                           {...field}
                           className="pr-10"
                         />
-                        <ShowPassword
+                        <ShowPasswordAction
                           setShowPassword={setShowPassword}
                           showPassword={showPassword}
                         />
