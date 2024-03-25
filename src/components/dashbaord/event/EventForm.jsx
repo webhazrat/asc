@@ -29,7 +29,7 @@ import { format } from "date-fns";
 
 export default function EventForm({ setIsModalOpen, event }) {
   const [seletedThumbnail, setSelectedThumbnail] = useState(
-    event.thumbnail ? `/uploads/${event.thumbnail}` : ""
+    event.thumbnail || ""
   );
 
   const form = useForm({
@@ -68,9 +68,7 @@ export default function EventForm({ setIsModalOpen, event }) {
       const thumbnail = URL.createObjectURL(file);
       setSelectedThumbnail(thumbnail);
     } else {
-      setSelectedThumbnail(
-        event.thumbnail ? `/uploads/${event.thumbnail}` : ""
-      );
+      setSelectedThumbnail(event.thumbnail || "");
     }
   };
 

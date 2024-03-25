@@ -8,6 +8,7 @@ export const useParticipations = () => {
     user?._id ? `/api/participations` : null,
     fetcher
   );
+
   return {
     participations: data?.participations,
     isLoading,

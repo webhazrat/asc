@@ -12,7 +12,9 @@ export async function GET(req, { params }) {
       .populate({
         path: "student",
         select: { name: true, avatar: true },
-      });
+      })
+      .sort({ createdAt: -1 })
+      .limit(10);
 
     if (participants) {
       return NextResponse.json(

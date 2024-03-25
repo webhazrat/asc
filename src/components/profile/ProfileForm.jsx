@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,9 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "@/lib/zodSchema";
 export default function ProfileForm({ user, setIsOpen }) {
   const { batches, isLoading, error } = useBatch();
-  const [selectedAvatar, setSelectedAvatar] = useState(
-    user?.avatar ? `/uploads/avatars/${user?.avatar}` : ""
-  );
+  const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || "");
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -267,7 +266,9 @@ export default function ProfileForm({ user, setIsOpen }) {
               <FormControl>
                 <Input type="text" {...field} />
               </FormControl>
-
+              <FormDescription>
+                সর্বশেষ শিক্ষাগত যোগ্যতা যে প্রতিষ্ঠান থেকে অর্জন করেছেন
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

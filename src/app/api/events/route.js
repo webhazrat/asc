@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 import eventModel from "@/models/eventModel";
 import connectDB from "@/lib/connect";
 import { checkAdmin } from "@/lib/apiAuth";
-import { writeFile } from "fs/promises";
-import { join } from "path";
-import { generateFilename } from "@/lib/helpers";
+import { put } from "@vercel/blob";
 
 // get all events
 export async function GET(req) {
@@ -50,13 +48,11 @@ export async function POST(req) {
       );
     }
 
-    if (thumbnail.name) {
-      const thumbnailName = generateFilename(thumbnail.name);
-      const bytes = await thumbnail.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const path = join("", "public/uploads", thumbnailName);
-      await writeFile(path, buffer);
-      thumbnail = thumbnailName;
+    if (thumbnail?.name) {
+      const blob = await put(thumbnail.name, thumbnail, {
+        access: "public",
+      });
+      thumbnail = blob.url;
     }
 
     await eventModel.create({

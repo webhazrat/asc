@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { truncateString } from "@/lib/utils";
 import Thumbnail from "../common/Thumbnail";
 import ParticipateAction from "./ParticipateAction";
-import ParticipateAvatars from "./PartcipateAvatars";
+import ParticipateAvatars from "./ParticipantsAvatars";
 
 export default function FeaturedEventCard({ event }) {
   const feesDetail =
@@ -15,10 +15,7 @@ export default function FeaturedEventCard({ event }) {
   return (
     <div className="grid md:grid-cols-2 items-center p-4 md:p-8 gap-10 relative border border-muted rounded-2xl backdrop-filter backdrop-blur-lg">
       <div className="relative">
-        <Thumbnail
-          thumbnail={event?.thumbnail ? `/uploads/${event.thumbnail}` : ""}
-          alt={event?.title}
-        />
+        <Thumbnail thumbnail={event?.thumbnail || ""} alt={event?.title} />
         <EventCountDown endDate={"2024-04-08T00:00:00.000+00:00"} />
       </div>
       <div className="space-y-2">

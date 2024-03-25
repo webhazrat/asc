@@ -6,6 +6,7 @@ import { SERVER_URL } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { Loader } from "lucide-react";
 import { useParticipations } from "@/hooks/useParticipation";
+import { mutate } from "swr";
 
 const messages = [
   {
@@ -39,14 +40,13 @@ export default function ParticipateAction({ eventId }) {
   const participate = async () => {
     try {
       setLoading(true);
-      const res = await fetch(
-        `${SERVER_URL}/api/profile/${user?._id}/participate/`,
-        {
-          method: "POST",
-          body: JSON.stringify({ eventId }),
-        }
-      );
+      const res = await fetch(`${SERVER_URL}/api/participations`, {
+        method: "POST",
+        body: JSON.stringify({ eventId }),
+      });
       if (res.ok) {
+        mutate("/api/participants");
+        mutate("/api/participations");
         setIsAlertOpen(true);
         setStatus({
           ...status,
@@ -57,7 +57,7 @@ export default function ParticipateAction({ eventId }) {
       }
     } catch (error) {
       toast({
-        desciption: error.message,
+        desciption: error?.message,
       });
     } finally {
       setLoading(false);
@@ -85,6 +85,10 @@ export default function ParticipateAction({ eventId }) {
     }
   };
 
+  const isParticipate = participations?.some(
+    (data) => data.event && data.event._id === eventId
+  );
+
   return (
     <>
       <Alert
@@ -95,7 +99,9 @@ export default function ParticipateAction({ eventId }) {
         onContinue={confirm ? participate : () => setIsAlertOpen(false)}
         variant={status.variant}
       />
-      {participations?.event?._id === eventId ? (
+      {isParticipate ? (
+        <span className="text-green-500">অংশগ্রহণ করেছেন</span>
+      ) : (
         <Button
           onClick={handleParticipate}
           disabled={loading}
@@ -104,8 +110,6 @@ export default function ParticipateAction({ eventId }) {
           {loading && <Loader size={18} className="animate-spin" />}
           অংশগ্রহন করুন
         </Button>
-      ) : (
-        <span className="text-green-500">অংশগ্রহণ করেছেন</span>
       )}
     </>
   );

@@ -9,6 +9,8 @@ export default function BatchesList() {
   const { data, isLoading } = useSWR(`/api/batches`, fetcher);
   const batches = data?.batches;
 
+  console.log({ batches });
+
   let content = null;
   if (isLoading) {
     content = (

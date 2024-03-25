@@ -24,10 +24,7 @@ export default function UserDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
-          <CustomAvatar
-            avatar={user?.avatar ? `/uploads/avatars/${user?.avatar}` : ""}
-            name={user?.name}
-          />
+          <CustomAvatar avatar={user?.avatar || ""} name={user?.name} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 mr-2" align="end">

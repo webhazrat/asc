@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/connect";
 import { checkAdmin } from "@/lib/apiAuth";
 import batchModel from "@/models/batchModel";
+import studentModel from "@/models/studentModel";
 
 // get all batches
 export async function GET(req) {
@@ -14,7 +15,22 @@ export async function GET(req) {
         select: { name: true, _id: true, avatar: true },
       })
       .sort({ passingYear: -1 });
-    return NextResponse.json({ batches }, { status: 200 });
+
+    const batchsWithStudents = await Promise.all(
+      batches.map(async (batch) => {
+        const students = await studentModel
+          .find({ passingYear: batch.passingYear })
+          .select({ _id: true });
+
+        const batchData = {
+          ...batch.toObject(),
+          studentCount: students.length,
+        };
+        return batchData;
+      })
+    );
+
+    return NextResponse.json({ batches: batchsWithStudents }, { status: 200 });
   } catch (error) {
     console.error({ batchesGetError: error });
     return NextResponse.json({ message: error.message }, { status: 500 });

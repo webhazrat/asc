@@ -10,7 +10,7 @@ export default function BatchCard({ batch }) {
         </h4>
         <h2 className="text-muted-foreground">
           শিক্ষার্থী জয়েন হয়েছে {batch.examineeNumber} জনে
-          <span className="text-green-500"> --- </span> জন
+          <span className="text-green-500"> {batch.studentCount} </span> জন
         </h2>
       </div>
     </Link>

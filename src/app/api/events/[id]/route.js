@@ -1,10 +1,8 @@
 import { checkAdmin } from "@/lib/apiAuth";
 import connectDB from "@/lib/connect";
-import { deleteFile, generateFilename } from "@/lib/helpers";
 import eventModel from "@/models/eventModel";
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
-import { join } from "path";
+import { del, put } from "@vercel/blob";
 
 // patch an event
 export async function PATCH(req, { params }) {
@@ -17,6 +15,8 @@ export async function PATCH(req, { params }) {
       Object.fromEntries(formData);
 
     fees = JSON.parse(fees);
+
+    let parsedThumbnail = thumbnail;
 
     const eventExist = await eventModel.countDocuments({
       slug,
@@ -33,18 +33,16 @@ export async function PATCH(req, { params }) {
       );
     }
 
-    if (thumbnail.name) {
-      const thumbnailName = generateFilename(thumbnail.name);
-      const bytes = await thumbnail.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const path = join("", "public/uploads", thumbnailName);
-      await writeFile(path, buffer);
-      thumbnail = thumbnailName;
+    if (thumbnail?.name) {
+      const blob = await put(thumbnail.name, thumbnail, {
+        access: "public",
+      });
+      parsedThumbnail = blob.url;
     }
 
     // findByIdAndUpdate return prev document
     const event = await eventModel.findByIdAndUpdate(id, {
-      thumbnail,
+      thumbnail: parsedThumbnail,
       title,
       slug,
       description,
@@ -54,10 +52,8 @@ export async function PATCH(req, { params }) {
       status,
     });
 
-    console.log({ event });
-
-    if (thumbnail.name && event?.thumbnail) {
-      await deleteFile(`./public/uploads/${event.thumbnail}`);
+    if (thumbnail?.name && event?.thumbnail) {
+      await del(event?.thumbnail);
     }
 
     return NextResponse.json(
@@ -79,7 +75,7 @@ export async function DELETE(req, { params }) {
     const event = await eventModel.findByIdAndDelete(id);
 
     if (event?.thumbnail) {
-      await deleteFile(`./public/uploads/${event.thumbnail}`);
+      await del(event?.thumbnail);
     }
 
     return NextResponse.json(

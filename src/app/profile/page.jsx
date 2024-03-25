@@ -21,10 +21,7 @@ export default function Page() {
         <div className="flex gap-5 items-center">
           <div className="relative">
             <div className="w-[90px] h-[90px] border rounded-full">
-              <CustomAvatar
-                avatar={user?.avatar ? `/uploads/avatars/${user?.avatar}` : ""}
-                name={user?.name}
-              />
+              <CustomAvatar avatar={user?.avatar || ""} name={user?.name} />
             </div>
           </div>
           <div>

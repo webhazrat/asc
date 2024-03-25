@@ -2,7 +2,7 @@ import { Calendar, MapPin } from "lucide-react";
 import Thumbnail from "../common/Thumbnail";
 import { format } from "date-fns";
 import ParticipateAction from "./ParticipateAction";
-import ParticipateAvatars from "./PartcipateAvatars";
+import ParticipateAvatars from "./ParticipantsAvatars";
 
 export default function Event({ event }) {
   const feesDetail =
@@ -14,10 +14,7 @@ export default function Event({ event }) {
         {event.title}
       </h2>
 
-      <Thumbnail
-        thumbnail={event.thumbnail ? `/uploads/${event.thumbnail}` : ""}
-        alt={event.title}
-      />
+      <Thumbnail thumbnail={event.thumbnail || ""} alt={event.title} />
 
       <ul className="flex items-center gap-5 justify-center py-5 font-medium">
         <li className="flex items-center gap-2">

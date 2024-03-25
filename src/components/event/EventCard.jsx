@@ -9,10 +9,7 @@ export default function EventCard({ event }) {
   return (
     <Link href={`events/${slug}`}>
       <div className="border border-muted rounded-lg p-2 hover:outline outline-2 outline-primary outline-offset-2 h-full">
-        <Thumbnail
-          thumbnail={thumbnail ? `/uploads/${thumbnail}` : ""}
-          alt={title}
-        />
+        <Thumbnail thumbnail={thumbnail || ""} alt={title} />
         <div>
           <ul className="flex items-center gap-4 my-3">
             <li className="flex items-center gap-2">

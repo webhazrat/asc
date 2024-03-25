@@ -67,7 +67,7 @@ export const batchesColumns = (setBatchId, setBatchData) => [
     },
   },
   {
-    accessorKey: "joinedNumber",
+    accessorKey: "studentCount",
     header: ({ column }) => {
       return (
         <Button
@@ -506,11 +506,7 @@ export const batchStudentsColumns = () => [
         <div className="flex gap-2 items-center">
           <div className="flex-shrink-0 h-10 w-10">
             <CustomAvatar
-              avatar={
-                row.getValue("avatar")
-                  ? `/uploads/avatars/${row.getValue("avatar")}`
-                  : ""
-              }
+              avatar={row.getValue("avatar") || ""}
               name={row.getValue("name")}
             />
           </div>
@@ -724,7 +720,8 @@ export const participationsColumns = () => [
   },
 ];
 
-export const studentsColumns = () => [
+// dashboard/students
+export const studentsColumns = (setStudentData) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -770,11 +767,7 @@ export const studentsColumns = () => [
         <div className="flex gap-2 items-center">
           <div className="flex-shrink-0 h-10 w-10">
             <CustomAvatar
-              avatar={
-                row.getValue("avatar")
-                  ? `/uploads/avatars/${row.getValue("avatar")}`
-                  : ""
-              }
+              avatar={row.getValue("avatar") || ""}
               name={row.getValue("name")}
             />
           </div>
@@ -883,13 +876,11 @@ export const studentsColumns = () => [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(student.id)}
             >
               বিস্তারিত
             </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
+            <DropdownMenuItem onClick={() => setStudentData(student)}>
               আপডেট
             </DropdownMenuItem>
           </DropdownMenuContent>

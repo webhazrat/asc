@@ -1,12 +1,11 @@
 import { checkLogin } from "@/lib/apiAuth";
 import connectDB from "@/lib/connect";
-import { createFile, deleteFile } from "@/lib/helpers";
+import { del, put } from "@vercel/blob";
 import studentModel from "@/models/studentModel";
 import { NextResponse } from "next/server";
 
 // profile update
 export async function PATCH(req) {
-  const folder = "public/uploads/avatars";
   try {
     const session = await checkLogin();
     await connectDB();
@@ -27,8 +26,11 @@ export async function PATCH(req) {
 
     let parsedAvatar = avatar;
 
-    if (avatar.name) {
-      parsedAvatar = await createFile(avatar, folder);
+    if (avatar?.name) {
+      const blob = await put(avatar.name, avatar, {
+        access: "public",
+      });
+      parsedAvatar = blob.url;
     }
 
     const student = await studentModel
@@ -53,7 +55,7 @@ export async function PATCH(req) {
       .select("-password");
 
     if (avatar?.name && student?.avatar) {
-      await deleteFile(student?.avatar, folder);
+      await del(student?.avatar);
     }
 
     return NextResponse.json(
