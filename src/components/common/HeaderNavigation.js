@@ -12,7 +12,7 @@ import { useUser } from "@/hooks/useUser";
 export default function HeaderNavigation() {
   const { user, isLoading, error } = useUser();
   return (
-    <div className="py-3 border-b border-muted w-fullbackdrop-filter backdrop-blur-lg bg-white/60 z-20 h-16">
+    <div className="sticky top-0 py-3 border-b border-muted w-fullbackdrop-filter backdrop-blur-lg bg-white/60 z-20 h-16">
       <div className="container flex justify-between items-center h-full">
         <Link href={"/"}>
           <Image src={Logo} alt="logo" />

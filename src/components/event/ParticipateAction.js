@@ -7,6 +7,7 @@ import { toast } from "../ui/use-toast";
 import { Loader } from "lucide-react";
 import { useParticipations } from "@/hooks/useParticipation";
 import { mutate } from "swr";
+import { Skeleton } from "../ui/skeleton";
 
 const messages = [
   {
@@ -25,7 +26,7 @@ const messages = [
 ];
 
 export default function ParticipateAction({ eventId }) {
-  const { participations } = useParticipations();
+  const { participations, isLoading } = useParticipations();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirm, setConfirm] = useState(false);
@@ -55,9 +56,10 @@ export default function ParticipateAction({ eventId }) {
           variant: "success",
         });
       }
+      throw await res.json();
     } catch (error) {
       toast({
-        desciption: error?.message,
+        description: error?.message,
       });
     } finally {
       setLoading(false);
@@ -89,6 +91,31 @@ export default function ParticipateAction({ eventId }) {
     (data) => data.event && data.event._id === eventId
   );
 
+  let content = null;
+
+  if (isLoading) {
+    content = <Skeleton className="h-7 w-32" />;
+  }
+
+  if (!isLoading) {
+    content = (
+      <>
+        {isParticipate ? (
+          <span className="text-green-500">অংশগ্রহণ করেছেন</span>
+        ) : (
+          <Button
+            onClick={handleParticipate}
+            disabled={loading}
+            className="flex items-center gap-2"
+          >
+            {loading && <Loader size={18} className="animate-spin" />}
+            অংশগ্রহন করুন
+          </Button>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <Alert
@@ -99,18 +126,7 @@ export default function ParticipateAction({ eventId }) {
         onContinue={confirm ? participate : () => setIsAlertOpen(false)}
         variant={status.variant}
       />
-      {isParticipate ? (
-        <span className="text-green-500">অংশগ্রহণ করেছেন</span>
-      ) : (
-        <Button
-          onClick={handleParticipate}
-          disabled={loading}
-          className="flex items-center gap-2"
-        >
-          {loading && <Loader size={18} className="animate-spin" />}
-          অংশগ্রহন করুন
-        </Button>
-      )}
+      {content}
     </>
   );
 }

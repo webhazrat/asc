@@ -1,3 +1,4 @@
+import { checkAdmin } from "@/lib/apiAuth";
 import connectDB from "@/lib/connect";
 import studentModel from "@/models/studentModel";
 import { NextResponse } from "next/server";
@@ -5,11 +6,14 @@ import { NextResponse } from "next/server";
 // get all students with year
 export async function GET(req) {
   try {
+    await checkAdmin();
     await connectDB();
-    const students = await studentModel.find();
+    const students = await studentModel.find().sort({ createdAt: -1 });
+    const totalCount = await studentModel.countDocuments();
     if (students) {
       return NextResponse.json(
         {
+          totalCount,
           students,
         },
         {

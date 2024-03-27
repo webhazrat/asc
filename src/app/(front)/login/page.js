@@ -1,4 +1,3 @@
-import HeaderNavigation from "@/components/common/HeaderNavigation";
 import LoginForm from "@/components/auth/LoginForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/options";
@@ -11,7 +10,6 @@ export default async function Page() {
   }
   return (
     <>
-      <HeaderNavigation />
       <LoginForm />
     </>
   );

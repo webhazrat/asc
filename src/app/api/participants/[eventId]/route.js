@@ -16,10 +16,15 @@ export async function GET(req, { params }) {
       .sort({ createdAt: -1 })
       .limit(10);
 
+    const totalCount = await participationModel.countDocuments({
+      event: eventId,
+    });
+
     if (participants) {
       return NextResponse.json(
         {
-          participants: participants,
+          totalCount,
+          participants,
         },
         {
           status: 200,

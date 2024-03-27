@@ -17,8 +17,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <AuthProvider>
-        <body className={hind.className}>
-          <main>{children}</main>
+        <body className={`${hind.className}`}>
+          {children}
           <Toaster />
         </body>
       </AuthProvider>

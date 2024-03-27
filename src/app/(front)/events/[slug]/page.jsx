@@ -1,12 +1,10 @@
 "use client";
-import Footer from "@/components/common/Footer";
-import HeaderNavigation from "@/components/common/HeaderNavigation";
 import Event from "@/components/event/Event";
 import { fetcher } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 
-export default function Page({ params }) {
+export default function EventsSlugPage({ params }) {
   const { slug } = params;
   const router = useRouter();
   const { data, isLoading, error } = useSWR(`/api/event/${slug}`, fetcher);
@@ -26,11 +24,5 @@ export default function Page({ params }) {
     return null;
   }
 
-  return (
-    <>
-      <HeaderNavigation />
-      <div className="container py-10">{content}</div>
-      <Footer />
-    </>
-  );
+  return <div className="container py-10">{content}</div>;
 }

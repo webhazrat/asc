@@ -10,7 +10,9 @@ import useSWR from "swr";
 
 export default function Page() {
   const [studentData, setStudentData] = useState(false);
-  const { data, isLoading, error } = useSWR(`/api/students`, fetcher);
+  const { data, isLoading, error } = useSWR(`/api/students`, fetcher, {
+    refreshInterval: 3000,
+  });
   return (
     <>
       <Title title="স্টুডেন্টস">
