@@ -1,6 +1,13 @@
 "use client";
 import { participantsColumns } from "@/components/datatable/Columns";
 import { DataTable } from "@/components/datatable/DataTable";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { fetcher } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
@@ -28,6 +35,19 @@ export default function Page() {
   return (
     <>
       <h1 className="text-lg font-semibold">ইভেন্টে অংশগ্রহণকারী</h1>
+      <Select>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {events?.length > 0 &&
+            events.map((event) => (
+              <SelectItem key={event._id} value={event._id}>
+                {event.title}
+              </SelectItem>
+            ))}
+        </SelectContent>
+      </Select>
       <DataTable
         columns={participantsColumns()}
         isLoading={isLoading || participantsLoading}

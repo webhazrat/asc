@@ -27,13 +27,13 @@ export async function GET(req, { params: { eventId } }) {
 
     await connectDB();
     const participants = await participationModel
-      .find({ event: eventId })
+      .find(query)
       .populate({
         path: "student",
         select: { name: true, avatar: true, phone: true },
       })
       .sort({ createdAt: -1 })
-      .limit(10);
+      .limit(limit);
 
     const totalCount = await participationModel.countDocuments(query);
 
