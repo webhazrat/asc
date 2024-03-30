@@ -38,13 +38,13 @@ export default function ParticipantsAvatars({ eventId }) {
                       <TooltipTrigger asChild>
                         <div className="h-10 w-10 cursor-pointer">
                           <CustomAvatar
-                            avatar={student.avatar}
-                            name={student.name}
+                            avatar={student?.avatar}
+                            name={student?.name}
                           />
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{student.name}</p>
+                        <p>{student?.name}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

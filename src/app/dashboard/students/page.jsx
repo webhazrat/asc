@@ -13,7 +13,7 @@ export default function Page() {
   const { data, isLoading, error } = useSWR(`/api/students`, fetcher);
   return (
     <>
-      <Title title="স্টুডেন্টস">
+      <Title title="শিক্ষার্থী">
         <StudentModal isModalOpen={studentData} setIsModalOpen={setStudentData}>
           <StudentForm setIsModalOpen={setStudentData} student={studentData} />
         </StudentModal>

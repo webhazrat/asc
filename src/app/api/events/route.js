@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import eventModel from "@/models/eventModel";
 import connectDB from "@/lib/connect";
-import { checkAdmin } from "@/lib/apiAuth";
+import { checkAuthUser } from "@/lib/apiAuth";
 import { put } from "@vercel/blob";
 
 // get all events
@@ -29,7 +29,10 @@ export async function GET(req) {
 // create an event
 export async function POST(req) {
   try {
-    const session = await checkAdmin();
+    // check admin role
+    const user = await checkAuthUser();
+    if (!user.role?.includes("Admin")) throw new Error("Unauthorized route");
+
     await connectDB();
     const formData = await req.formData();
     let { thumbnail, title, slug, description, fees, location, date, status } =
@@ -56,7 +59,7 @@ export async function POST(req) {
     }
 
     await eventModel.create({
-      author: session.user._id,
+      author: user._id,
       thumbnail,
       title,
       slug,

@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ChevronsUpDown, Loader } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -47,6 +47,7 @@ export function DataTable({
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [rowSelection, setRowSelection] = useState({});
+  const [inputValue, setInputValue] = useState("");
 
   const table = useReactTable({
     data: data || [],
@@ -101,8 +102,8 @@ export function DataTable({
             type="text"
             placeholder="সার্চ করুন..."
             className="text-sm"
-            // value={inputValue}
-            // onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
           />
         </div>
       </div>

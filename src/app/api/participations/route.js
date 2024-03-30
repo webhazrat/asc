@@ -1,16 +1,18 @@
 import connectDB from "@/lib/connect";
 import { NextResponse } from "next/server";
+import { checkAuthUser } from "@/lib/apiAuth";
 import participationModel from "@/models/participationModel";
-import { checkLogin } from "@/lib/apiAuth";
 
 // get participations
 export async function GET(req) {
   try {
-    const session = await checkLogin();
-    const id = session.user._id;
+    // check login
+    const user = await checkAuthUser();
+    if (!user._id) throw new Error("Unauthorized route");
+
     await connectDB();
     const participations = await participationModel
-      .find({ student: id })
+      .find({ student: user._id })
       .populate({
         path: "event",
         select: { title: true, slug: true, fees: true, date: true },
@@ -19,7 +21,7 @@ export async function GET(req) {
     if (participations) {
       return NextResponse.json(
         {
-          participations: participations,
+          participations,
         },
         {
           status: 200,
@@ -50,14 +52,16 @@ export async function GET(req) {
 // create a participation
 export async function POST(req) {
   try {
-    const session = await checkLogin();
-    const id = session.user._id;
+    // check login
+    const user = await checkAuthUser();
+    if (!user._id) throw new Error("Unauthorized route");
+
     await connectDB();
     const { eventId } = await req.json();
 
     const student = await participationModel.countDocuments({
       event: eventId,
-      student: id,
+      student: user._id,
     });
     if (student) {
       return NextResponse.json(
@@ -70,8 +74,9 @@ export async function POST(req) {
     }
 
     await participationModel.create({
-      student: id,
+      student: user._id,
       event: eventId,
+      passingYear: user.passingYear,
     });
 
     return NextResponse.json(

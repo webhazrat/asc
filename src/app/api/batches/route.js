@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/connect";
-import { checkAdmin } from "@/lib/apiAuth";
+import { checkAuthUser } from "@/lib/apiAuth";
 import batchModel from "@/models/batchModel";
 import studentModel from "@/models/studentModel";
 
@@ -40,11 +40,12 @@ export async function GET(req) {
 // create a batch
 export async function POST(req) {
   try {
-    const session = await checkAdmin();
+    // check admin role
+    const user = await checkAuthUser();
+    if (!user.role?.includes("Admin")) throw new Error("Unauthorized route");
+
     await connectDB();
-    const data = await req.json();
-    console.log({ data });
-    const { passingYear, examineeNumber } = data;
+    const { passingYear, examineeNumber } = await req.json();
 
     const batch = await batchModel.countDocuments({ passingYear });
     if (batch) {
@@ -58,7 +59,7 @@ export async function POST(req) {
     }
 
     await batchModel.create({
-      author: session.user._id,
+      author: user._id,
       passingYear,
       examineeNumber,
     });

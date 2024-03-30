@@ -672,8 +672,8 @@ export const participationsColumns = () => [
       );
     },
     cell: ({ row }) => {
-      const date = row.original.event.date;
-      return format(new Date(date), "dd MMMM yyyy");
+      const date = row.original?.event?.date;
+      return date ? format(new Date(date), "dd MMMM yyyy") : "";
     },
   },
   {
@@ -712,6 +712,160 @@ export const participationsColumns = () => [
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
               বিস্তারিত
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];
+
+// profile/event-participants
+export const participantsColumns = (setStudentData) => [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "student.avatar",
+    enableHiding: false,
+  },
+  {
+    accessorKey: "student.name",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          নাম
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const student = row.original.student;
+      return (
+        <div className="flex gap-2 items-center">
+          <div className="flex-shrink-0 h-10 w-10">
+            <CustomAvatar avatar={student?.avatar || ""} name={student?.name} />
+          </div>
+          {student?.name}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "student.phone",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          মোবাইল নাম্বার
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const phone = row.original.student?.phone;
+      return (
+        <a href={`tel:${phone}`} className="text-primary">
+          {phone}
+        </a>
+      );
+    },
+  },
+  {
+    accessorKey: "fees",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ফি
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          অবস্থা
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          অংশগ্রহণের তারিখ
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return format(new Date(row.getValue("createdAt")), "dd MMMM yyyy");
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const student = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onClick={() => navigator.clipboard.writeText(student.id)}
+            >
+              বিস্তারিত
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setStudentData(student)}>
+              আপডেট
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -837,7 +991,22 @@ export const studentsColumns = (setStudentData) => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          রোল
+          ভূমিকা
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          অবস্থা
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -852,7 +1021,7 @@ export const studentsColumns = (setStudentData) => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          যোগদানের তারিখ
+          তারিখ
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );

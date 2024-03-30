@@ -5,7 +5,7 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-export const SERVER_URL = "https://aiiasc.vercel.app";
+export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 // swr fetcher
 export const fetcher = async (...args) => {

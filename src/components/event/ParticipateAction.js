@@ -5,7 +5,7 @@ import Alert from "../common/Alert";
 import { SERVER_URL } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { Loader } from "lucide-react";
-import { useParticipations } from "@/hooks/useParticipation";
+import { useParticipations } from "@/hooks/useParticipations";
 import { mutate } from "swr";
 import { Skeleton } from "../ui/skeleton";
 
@@ -46,7 +46,7 @@ export default function ParticipateAction({ eventId }) {
         body: JSON.stringify({ eventId }),
       });
       if (res.ok) {
-        mutate("/api/participants");
+        mutate(`/api/participants/${eventId}`);
         mutate("/api/participations");
         setIsAlertOpen(true);
         setStatus({

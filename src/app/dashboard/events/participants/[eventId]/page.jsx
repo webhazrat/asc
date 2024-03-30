@@ -1,20 +1,25 @@
 "use client";
 import Title from "@/components/dashbaord/Title";
-import { studentsColumns } from "@/components/datatable/Columns";
+import { participantsColumns } from "@/components/datatable/Columns";
 import { DataTable } from "@/components/datatable/DataTable";
 import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 
-export default function Page() {
-  const { data, isLoading, error } = useSWR(`/api/students`, fetcher);
+export default function Page({ params: { eventId } }) {
+  const { data, isLoading, error } = useSWR(
+    `/api/participants/${eventId}?all=${true}`,
+    fetcher
+  );
+
+  console.log({ data });
   return (
     <>
       <Title title="অংশগ্রহণকারী শিক্ষার্থী" />
       <DataTable
-        columns={studentsColumns()}
-        data={data?.students}
+        columns={participantsColumns()}
+        data={data?.participants}
         isLoading={isLoading}
-        columnVisible={{ avatar: false }}
+        columnVisible={{ student_avatar: false }}
       />
     </>
   );

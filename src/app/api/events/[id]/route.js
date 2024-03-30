@@ -1,14 +1,16 @@
-import { checkAdmin } from "@/lib/apiAuth";
+import { checkAuthUser } from "@/lib/apiAuth";
 import connectDB from "@/lib/connect";
 import eventModel from "@/models/eventModel";
 import { NextResponse } from "next/server";
 import { del, put } from "@vercel/blob";
 
 // patch an event
-export async function PATCH(req, { params }) {
-  const { id } = params;
+export async function PATCH(req, { params: { id } }) {
   try {
-    await checkAdmin();
+    // check admin role
+    const user = await checkAuthUser();
+    if (!user.role?.includes("Admin")) throw new Error("Unauthorized route");
+
     await connectDB();
     const formData = await req.formData();
     let { thumbnail, title, slug, description, fees, location, date, status } =
@@ -67,10 +69,12 @@ export async function PATCH(req, { params }) {
 }
 
 // delete an event
-export async function DELETE(req, { params }) {
-  const { id } = params;
+export async function DELETE(req, { params: { id } }) {
   try {
-    await checkAdmin();
+    // check admin role
+    const user = await checkAuthUser();
+    if (!user.role?.includes("Admin")) throw new Error("Unauthorized route");
+
     await connectDB();
     const event = await eventModel.findByIdAndDelete(id);
 

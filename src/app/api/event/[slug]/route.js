@@ -3,8 +3,7 @@ import eventModel from "@/models/eventModel";
 import { NextResponse } from "next/server";
 
 // get an event
-export async function GET(req, { params }) {
-  const { slug } = params;
+export async function GET(req, { params: { slug } }) {
   try {
     await connectDB();
     const event = await eventModel.findOne({ slug });

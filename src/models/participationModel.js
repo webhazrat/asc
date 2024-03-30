@@ -12,6 +12,7 @@ const participationSchema = new mongoose.Schema(
       ref: "Student",
       required: true,
     },
+    passingYear: String,
     fees: [
       {
         _id: false,

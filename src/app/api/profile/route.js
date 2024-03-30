@@ -1,4 +1,4 @@
-import { checkLogin } from "@/lib/apiAuth";
+import { checkAuthUser } from "@/lib/apiAuth";
 import connectDB from "@/lib/connect";
 import { del, put } from "@vercel/blob";
 import studentModel from "@/models/studentModel";
@@ -7,7 +7,10 @@ import { NextResponse } from "next/server";
 // profile update
 export async function PATCH(req) {
   try {
-    const session = await checkLogin();
+    // check login
+    const user = await checkAuthUser();
+    if (!user._id) throw new Error("Unauthorized route");
+
     await connectDB();
     const formData = await req.formData();
     let {
@@ -35,7 +38,7 @@ export async function PATCH(req) {
 
     const student = await studentModel
       .findOneAndUpdate(
-        { _id: session.user._id },
+        { _id: user._id },
         {
           $set: {
             avatar: parsedAvatar,

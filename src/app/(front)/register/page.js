@@ -8,9 +8,5 @@ export default async function Page() {
   if (session) {
     redirect("/profile");
   }
-  return (
-    <>
-      <RegisterForm />
-    </>
-  );
+  return <RegisterForm />;
 }

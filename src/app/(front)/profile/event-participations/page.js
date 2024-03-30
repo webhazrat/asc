@@ -1,7 +1,7 @@
 "use client";
 import { participationsColumns } from "@/components/datatable/Columns";
 import { DataTable } from "@/components/datatable/DataTable";
-import { useParticipations } from "@/hooks/useParticipation";
+import { useParticipations } from "@/hooks/useParticipations";
 
 export default function Page() {
   const { participations, isLoading } = useParticipations();

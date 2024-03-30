@@ -1,4 +1,3 @@
-import { Button } from "../../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +17,7 @@ export default function StudentModal({
         <ScrollArea className="max-h-[calc(100vh_-_100px)]">
           <div className="p-6 space-y-5">
             <DialogHeader>
-              <DialogTitle>স্টুডেন্ট</DialogTitle>
+              <DialogTitle>শিক্ষার্থী</DialogTitle>
             </DialogHeader>
             {children}
           </div>

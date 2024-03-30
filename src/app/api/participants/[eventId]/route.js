@@ -1,24 +1,41 @@
 import connectDB from "@/lib/connect";
 import { NextResponse } from "next/server";
 import participationModel from "@/models/participationModel";
+import { checkAuthUser } from "@/lib/apiAuth";
 
 // get event wise participants
-export async function GET(req, { params }) {
-  const { eventId } = params;
+export async function GET(req, { params: { eventId } }) {
+  const { searchParams } = new URL(req.url);
+  const all = searchParams.get("all");
+
   try {
+    const user = await checkAuthUser();
+
+    let query = { event: eventId };
+    let limit = 3;
+
+    if (user?.role?.includes("Admin") && all) {
+      console.log("Admin");
+      limit = -1;
+    }
+
+    if (user?.role?.includes("Head") && !all) {
+      console.log("Head");
+      query = { event: eventId, passingYear: user.passingYear };
+      limit = -1;
+    }
+
     await connectDB();
     const participants = await participationModel
       .find({ event: eventId })
       .populate({
         path: "student",
-        select: { name: true, avatar: true },
+        select: { name: true, avatar: true, phone: true },
       })
       .sort({ createdAt: -1 })
       .limit(10);
 
-    const totalCount = await participationModel.countDocuments({
-      event: eventId,
-    });
+    const totalCount = await participationModel.countDocuments(query);
 
     if (participants) {
       return NextResponse.json(
