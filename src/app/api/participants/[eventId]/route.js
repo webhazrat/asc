@@ -2,11 +2,12 @@ import connectDB from "@/lib/connect";
 import { NextResponse } from "next/server";
 import participationModel from "@/models/participationModel";
 import { checkAuthUser } from "@/lib/apiAuth";
+import eventModel from "@/models/eventModel";
 
 // get event wise participants
 export async function GET(req, { params: { eventId } }) {
   const { searchParams } = new URL(req.url);
-  const all = searchParams.get("all");
+  const role = searchParams.get("role");
 
   try {
     const user = await checkAuthUser();
@@ -14,12 +15,12 @@ export async function GET(req, { params: { eventId } }) {
     let query = { event: eventId };
     let limit = 3;
 
-    if (user?.role?.includes("Admin") && all) {
+    if (user?.role?.includes("Admin") && role === "Admin") {
       console.log("Admin");
       limit = -1;
     }
 
-    if (user?.role?.includes("Head") && !all) {
+    if (user?.role?.includes("Head") && role === "Head") {
       console.log("Head");
       query = { event: eventId, passingYear: user.passingYear };
       limit = -1;
@@ -35,29 +36,20 @@ export async function GET(req, { params: { eventId } }) {
       .sort({ createdAt: -1 })
       .limit(limit);
 
+    const event = await eventModel.findById(eventId).select("title date");
+
     const totalCount = await participationModel.countDocuments(query);
 
-    if (participants) {
-      return NextResponse.json(
-        {
-          totalCount,
-          participants,
-        },
-        {
-          status: 200,
-        }
-      );
-    } else {
-      return NextResponse.json(
-        {
-          title: "দুঃখিত!",
-          message: `অংশগ্রহণকারীর কোন তথ্য পাওয়া যায়নি`,
-        },
-        {
-          status: 404,
-        }
-      );
-    }
+    return NextResponse.json(
+      {
+        event,
+        totalCount,
+        participants,
+      },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.log({ participantsGetError: error });
     return NextResponse.json(

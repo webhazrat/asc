@@ -4,8 +4,7 @@ import { fetcher } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 
-export default function EventsSlugPage({ params }) {
-  const { slug } = params;
+export default function EventsSlugPage({ params: { slug } }) {
   const router = useRouter();
   const { data, isLoading, error } = useSWR(`/api/event/${slug}`, fetcher);
   const event = data?.event;

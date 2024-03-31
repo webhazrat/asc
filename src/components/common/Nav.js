@@ -24,6 +24,7 @@ export default function Nav({ navs }) {
             variant={
               (nav.href.includes("/dashboard/") &&
                 pathname.includes(nav.href)) ||
+              (nav.href.includes("/profile/") && pathname.includes(nav.href)) ||
               pathname === nav.href
                 ? ""
                 : "ghost"

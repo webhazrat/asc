@@ -20,6 +20,16 @@ const participationSchema = new mongoose.Schema(
         amount: Number,
       },
     ],
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+      required: true,
+    },
+    status: {
+      type: String,
+      required: true,
+      default: "Unpaid",
+    },
   },
   {
     timestamps: true,

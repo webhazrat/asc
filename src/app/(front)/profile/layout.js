@@ -36,7 +36,7 @@ export default function ProfileLayout({ children }) {
               {
                 id: "5",
                 title: "ইভেন্টে অংশগ্রহণকারী",
-                href: "/profile/event-participants",
+                href: "/profile/events",
                 icon: Users,
               },
               {

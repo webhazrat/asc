@@ -276,7 +276,8 @@ export const teachersColumns = () => [
   },
 ];
 
-export const eventsColumns = (setEventId, setEventData) => [
+// [profile/dashboard]/events
+export const eventsColumns = ({ role, setEventId, setEventData }) => [
   {
     id: "select",
     header: ({ table }) => (
@@ -423,7 +424,6 @@ export const eventsColumns = (setEventId, setEventData) => [
     enableHiding: false,
     cell: ({ row }) => {
       const event = row.original;
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -433,26 +433,203 @@ export const eventsColumns = (setEventId, setEventData) => [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>
-              <Link href={`/dashboard/events/participants/${event._id}`}>
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/${role === "Admin" ? "dashboard" : "profile"}/events/${
+                  event._id
+                }/participants`}
+              >
                 অংশগ্রহনকারী
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setEventData(event)}>
-              আপডেট
+
+            <DropdownMenuItem asChild>
+              <Link href={`/events/${event.slug}`}>বিস্তারিত</Link>
             </DropdownMenuItem>
+
+            {role === "Admin" && (
+              <>
+                <DropdownMenuItem onClick={() => setEventData(event)}>
+                  আপডেট
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => navigator.clipboard.writeText(payment.id)}
+                >
+                  আয় ব্যয়
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-red-500 hover:!text-red-500"
+                  onClick={() => setEventId(event._id)}
+                >
+                  ডিলিট
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
+];
+
+// [profile/dashbaord]/events/[eventId]/participants
+export const participantsColumns = ({ role, setPartcipant }) => [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "student.avatar",
+    enableHiding: false,
+  },
+  {
+    accessorKey: "student.name",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          নাম
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const student = row.original.student;
+      return (
+        <div className="flex gap-2 items-center">
+          <div className="flex-shrink-0 h-10 w-10">
+            <CustomAvatar avatar={student?.avatar || ""} name={student?.name} />
+          </div>
+          {student?.name}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "student.phone",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          মোবাইল নাম্বার
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const phone = row.original.student?.phone;
+      return (
+        <a href={`tel:${phone}`} className="text-primary">
+          {phone}
+        </a>
+      );
+    },
+  },
+  {
+    accessorKey: "fees",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ফি
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const fees = row.getValue("fees").map((fee) => (
+        <p key={fee.category}>
+          {fee.category} - {fee.amount}
+        </p>
+      ));
+      return fees;
+    },
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          অবস্থা
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          অংশগ্রহণের তারিখ
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return format(new Date(row.getValue("createdAt")), "dd MMMM yyyy");
+    },
+  },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => {
+      const participant = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => alert("This feature is under develop")}
             >
-              আয় ব্যয়
+              বিস্তারিত
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-red-500 hover:!text-red-500"
-              onClick={() => setEventId(event._id)}
-            >
-              ডিলিট
-            </DropdownMenuItem>
+            {role === "Head" && (
+              <DropdownMenuItem onClick={() => setPartcipant(participant)}>
+                পেমেন্ট
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -712,160 +889,6 @@ export const participationsColumns = () => [
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
               বিস্তারিত
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-// profile/event-participants
-export const participantsColumns = (setStudentData) => [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "student.avatar",
-    enableHiding: false,
-  },
-  {
-    accessorKey: "student.name",
-    header: ({ column }) => {
-      return (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          নাম
-          <ChevronsUpDown size={12} className="ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const student = row.original.student;
-      return (
-        <div className="flex gap-2 items-center">
-          <div className="flex-shrink-0 h-10 w-10">
-            <CustomAvatar avatar={student?.avatar || ""} name={student?.name} />
-          </div>
-          {student?.name}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "student.phone",
-    header: ({ column }) => {
-      return (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          মোবাইল নাম্বার
-          <ChevronsUpDown size={12} className="ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      const phone = row.original.student?.phone;
-      return (
-        <a href={`tel:${phone}`} className="text-primary">
-          {phone}
-        </a>
-      );
-    },
-  },
-  {
-    accessorKey: "fees",
-    header: ({ column }) => {
-      return (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          ফি
-          <ChevronsUpDown size={12} className="ml-2" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          অবস্থা
-          <ChevronsUpDown size={12} className="ml-2" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          অংশগ্রহণের তারিখ
-          <ChevronsUpDown size={12} className="ml-2" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return format(new Date(row.getValue("createdAt")), "dd MMMM yyyy");
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const student = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(student.id)}
-            >
-              বিস্তারিত
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setStudentData(student)}>
-              আপডেট
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

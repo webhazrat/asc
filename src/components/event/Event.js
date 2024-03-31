@@ -38,7 +38,7 @@ export default function Event({ event }) {
 
       <div className="flex items-center gap-4 justify-between mt-5">
         <ParticipateAction eventId={event._id} />
-        <ParticipateAvatars />
+        <ParticipateAvatars eventId={event._id} />
       </div>
     </div>
   );

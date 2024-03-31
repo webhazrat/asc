@@ -7,7 +7,10 @@ import { usePathname } from "next/navigation";
 export default function NavItems() {
   const pathname = usePathname();
   const isActive = (path) => {
-    return path === pathname || pathname.includes(path) ? "secondary" : "ghost";
+    return path === pathname ||
+      (!pathname.includes("/profile/") && pathname.includes(path))
+      ? "secondary"
+      : "ghost";
   };
 
   return (

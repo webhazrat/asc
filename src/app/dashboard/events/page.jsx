@@ -42,7 +42,7 @@ export default function Page() {
   };
 
   return (
-    <>
+    <div className="space-y-2">
       <Title title="ইভেন্টস">
         <EventModal isModalOpen={eventData} setIsModalOpen={setEventData}>
           <EventForm setIsModalOpen={setEventData} event={eventData} />
@@ -57,10 +57,10 @@ export default function Page() {
         desciption="এটি স্থায়ীভাবে আপনার ইভেন্টটি মুছে যাবে এবং আমাদের সার্ভার থেকে ডেটাটি মুছে যাবে"
       />
       <DataTable
-        columns={eventsColumns(setEventId, setEventData)}
+        columns={eventsColumns({ role: "Admin", setEventId, setEventData })}
         data={data?.events}
         isLoading={isLoading}
       />
-    </>
+    </div>
   );
 }

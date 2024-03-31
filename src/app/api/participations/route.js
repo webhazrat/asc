@@ -2,6 +2,7 @@ import connectDB from "@/lib/connect";
 import { NextResponse } from "next/server";
 import { checkAuthUser } from "@/lib/apiAuth";
 import participationModel from "@/models/participationModel";
+import eventModel from "@/models/eventModel";
 
 // get participations
 export async function GET(req) {
@@ -59,6 +60,8 @@ export async function POST(req) {
     await connectDB();
     const { eventId } = await req.json();
 
+    const event = await eventModel.findById(eventId).select("fees");
+
     const student = await participationModel.countDocuments({
       event: eventId,
       student: user._id,
@@ -76,6 +79,7 @@ export async function POST(req) {
     await participationModel.create({
       student: user._id,
       event: eventId,
+      fees: event.fees,
       passingYear: user.passingYear,
     });
 
