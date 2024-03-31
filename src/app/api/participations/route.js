@@ -80,7 +80,6 @@ export async function POST(req) {
       student: user._id,
       event: eventId,
       fees: event.fees,
-      passingYear: user.passingYear,
     });
 
     return NextResponse.json(

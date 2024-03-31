@@ -15,7 +15,7 @@ export default function EventParticipantsPage({ params: { eventId } }) {
   const router = useRouter();
   const [participant, setPartcipant] = useState(null);
   const { data, isLoading, error } = useSWR(
-    `/api/participants/${eventId}?role=Head`,
+    eventId ? `/api/participants/${eventId}?role=Head` : null,
     fetcher
   );
 

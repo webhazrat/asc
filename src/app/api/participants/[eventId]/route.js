@@ -13,28 +13,32 @@ export async function GET(req, { params: { eventId } }) {
     const user = await checkAuthUser();
 
     let query = { event: eventId };
+    let match = {};
     let limit = 3;
 
     if (user?.role?.includes("Admin") && role === "Admin") {
       console.log("Admin");
-      limit = -1;
+      limit = null;
     }
 
     if (user?.role?.includes("Head") && role === "Head") {
       console.log("Head");
-      query = { event: eventId, passingYear: user.passingYear };
-      limit = -1;
+      match = { passingYear: user.passingYear };
+      limit = null;
     }
 
     await connectDB();
-    const participants = await participationModel
+    let participants = await participationModel
       .find(query)
       .populate({
         path: "student",
-        select: { name: true, avatar: true, phone: true },
+        match: match,
+        select: { name: true, avatar: true, phone: true, passingYear: true },
       })
       .sort({ createdAt: -1 })
       .limit(limit);
+
+    participants = participants.filter((participant) => participant.student);
 
     const event = await eventModel.findById(eventId).select("title date");
 

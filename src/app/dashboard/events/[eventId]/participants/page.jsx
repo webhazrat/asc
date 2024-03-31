@@ -12,9 +12,10 @@ import useSWR from "swr";
 export default function EventParticipantsPage({ params: { eventId } }) {
   const router = useRouter();
   const { data, isLoading, error } = useSWR(
-    `/api/participants/${eventId}?role=Admin`,
+    eventId ? `/api/participants/${eventId}?role=Admin` : null,
     fetcher
   );
+
   return (
     <div className="space-y-2">
       <Button variant="outline" size="icon" onClick={() => router.back()}>

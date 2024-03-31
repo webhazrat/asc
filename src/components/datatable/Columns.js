@@ -551,6 +551,21 @@ export const participantsColumns = ({ role, setPartcipant }) => [
     },
   },
   {
+    accessorKey: "student.passingYear",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          পাশের সাল
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "fees",
     header: ({ column }) => {
       return (
