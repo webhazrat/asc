@@ -1,4 +1,3 @@
-"use client";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import {
