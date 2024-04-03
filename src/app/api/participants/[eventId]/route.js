@@ -30,11 +30,17 @@ export async function GET(req, { params: { eventId } }) {
     await connectDB();
     let participants = await participationModel
       .find(query)
-      .populate({
-        path: "student",
-        match: match,
-        select: { name: true, avatar: true, phone: true, passingYear: true },
-      })
+      .populate([
+        {
+          path: "student",
+          match: match,
+          select: { name: true, avatar: true, phone: true, passingYear: true },
+        },
+        {
+          path: "event",
+          select: { fees: true },
+        },
+      ])
       .sort({ createdAt: -1 })
       .limit(limit);
 

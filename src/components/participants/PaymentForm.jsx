@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Loader, Minus } from "lucide-react";
+import { Loader } from "lucide-react";
 import { SERVER_URL } from "@/lib/utils";
 import { mutate } from "swr";
 import { toast } from "../ui/use-toast";
@@ -18,6 +18,7 @@ export default function PaymentForm({ eventId, participant, setIsOpen }) {
   const form = useForm({
     defaultValues: {
       name: participant.student?.name,
+      eventFees: participant.event?.fees,
       fees: participant.fees,
     },
   });
@@ -33,7 +34,6 @@ export default function PaymentForm({ eventId, participant, setIsOpen }) {
   });
 
   const paymentReceive = async (data) => {
-    console.log({ data });
     const res = await fetch(
       `${SERVER_URL}/api/participant/${participant._id}`,
       {
@@ -91,7 +91,7 @@ export default function PaymentForm({ eventId, participant, setIsOpen }) {
               <div key={field.id} className="flex gap-2">
                 <FormField
                   control={control}
-                  name={`fees.${index}.category`}
+                  name={`eventFees.${index}.category`}
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormControl>

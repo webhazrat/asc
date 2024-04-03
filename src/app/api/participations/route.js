@@ -60,8 +60,6 @@ export async function POST(req) {
     await connectDB();
     const { eventId } = await req.json();
 
-    const event = await eventModel.findById(eventId).select("fees");
-
     const student = await participationModel.countDocuments({
       event: eventId,
       student: user._id,
@@ -79,7 +77,6 @@ export async function POST(req) {
     await participationModel.create({
       student: user._id,
       event: eventId,
-      fees: event.fees,
     });
 
     return NextResponse.json(
