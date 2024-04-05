@@ -916,7 +916,8 @@ export const participationsColumns = () => [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const student = row.original;
+      const participation = row.original;
+      console.log({ participation });
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -926,8 +927,10 @@ export const participationsColumns = () => [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={alert("This feature is under develop")}>
-              বিস্তারিত
+            <DropdownMenuItem asChild>
+              <Link href={`/events/${participation.event.slug}`}>
+                বিস্তারিত
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
