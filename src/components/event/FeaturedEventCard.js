@@ -16,7 +16,7 @@ export default function FeaturedEventCard({ event }) {
     <div className="grid md:grid-cols-2 items-center p-4 md:p-8 gap-10 relative border border-muted rounded-2xl backdrop-filter backdrop-blur-lg">
       <div className="relative">
         <Thumbnail thumbnail={event?.thumbnail || ""} alt={event?.title} />
-        <EventCountDown endDate={"2024-04-08T00:00:00.000+00:00"} />
+        <EventCountDown endDate={event?.date} />
       </div>
       <div className="space-y-2">
         <h2 className="text-2xl md:text-[28px] font-bold">{event?.title}</h2>

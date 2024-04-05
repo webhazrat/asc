@@ -2,43 +2,59 @@ import connectDB from "@/lib/connect";
 import { NextResponse } from "next/server";
 import { checkAuthUser } from "@/lib/apiAuth";
 import participationModel from "@/models/participationModel";
-import eventModel from "@/models/eventModel";
 
 // get participations
 export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const pageIndex = searchParams.get("pageIndex");
+  const pageSize = searchParams.get("pageSize");
+  const search = searchParams.get("search") ?? "";
+  const index = parseInt(pageIndex) || 0;
+  const size = parseInt(pageSize) || 10;
   try {
     // check login
     const user = await checkAuthUser();
-    if (!user._id) throw new Error("Unauthorized route");
+    if (!user?._id) throw new Error("Unauthorized route");
+
+    const regex = new RegExp(search, "i");
+
+    const match = {
+      $and: [
+        { student: user?._id },
+        {
+          $or: [
+            { "event.title": { $regex: regex } },
+            { status: { $regex: regex } },
+          ],
+        },
+      ],
+    };
 
     await connectDB();
     const participations = await participationModel
-      .find({ student: user._id })
+      .find(match)
       .populate({
         path: "event",
         select: { title: true, slug: true, fees: true, date: true },
-      });
+      })
+      .sort({ createdAt: -1 })
+      .skip(index * size)
+      .limit(size);
 
-    if (participations) {
-      return NextResponse.json(
-        {
-          participations,
-        },
-        {
-          status: 200,
-        }
-      );
-    } else {
-      return NextResponse.json(
-        {
-          title: "দুঃখিত!",
-          message: `অংশগ্রহণের কোন তথ্য পাওয়া যায়নি`,
-        },
-        {
-          status: 404,
-        }
-      );
-    }
+    const total = await participationModel.countDocuments({
+      student: user._id,
+    });
+    return NextResponse.json(
+      {
+        total,
+        pageCount: Math.ceil(total / size),
+        pageSize: size,
+        data: participations,
+      },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.log({ participationsGetError: error });
     return NextResponse.json(
@@ -55,7 +71,7 @@ export async function POST(req) {
   try {
     // check login
     const user = await checkAuthUser();
-    if (!user._id) throw new Error("Unauthorized route");
+    if (!user?._id) throw new Error("Unauthorized route");
 
     await connectDB();
     const { eventId } = await req.json();

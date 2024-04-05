@@ -2,9 +2,21 @@
 import { participationsColumns } from "@/components/datatable/Columns";
 import { DataTable } from "@/components/datatable/DataTable";
 import { useParticipations } from "@/hooks/useParticipations";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function Page() {
-  const { participations, isLoading } = useParticipations();
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const page = searchParams.get("page");
+  const [pagination, setPagination] = useState({
+    pageIndex: page ? page - 1 : 0,
+    pageSize: 10,
+  });
+  const [globalFilter, setGlobalFilter] = useState(search || "");
+  const { data, isLoading } = useParticipations(
+    `/api/participations?pageIndex=${pagination.pageIndex}&pageSize=${pagination.pageSize}&search=${globalFilter}`
+  );
 
   return (
     <>
@@ -12,7 +24,11 @@ export default function Page() {
       <DataTable
         columns={participationsColumns()}
         isLoading={isLoading}
-        data={participations}
+        data={data}
+        pagination={pagination}
+        setPagination={setPagination}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
       />
     </>
   );

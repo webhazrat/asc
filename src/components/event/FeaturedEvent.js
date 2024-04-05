@@ -6,7 +6,7 @@ import FeaturedEventCard from "./FeaturedEventCard";
 
 export default function FeaturedEvent() {
   const { data, isLoading } = useSWR(`/api/events?status=Featured`, fetcher);
-  const event = data?.events[0];
+  const event = data?.data[0];
 
   let content = null;
   if (isLoading) {

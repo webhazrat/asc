@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 export default function Header() {
   return (
-    <div className="sticky top-0 flex gap-2 items-center justify-end border-b bg-background px-4 h-14">
+    <div className="sticky top-0 z-30 flex gap-2 items-center justify-end border-b bg-background px-4 h-14">
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="ghost" size="sm" className="block md:hidden">

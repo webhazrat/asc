@@ -45,7 +45,7 @@ export default function Calculation() {
 
       <div className="border border-muted rounded-2xl backdrop-filter backdrop-blur-lg">
         <ScrollArea className="table-auto w-full">
-          <Table className="rounded-2xl">
+          <Table className="rounded-md">
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[100px]">ক্রমিক</TableHead>

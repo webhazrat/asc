@@ -6,15 +6,29 @@ import studentModel from "@/models/studentModel";
 
 // get all batches
 export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const pageIndex = searchParams.get("pageIndex");
+  const pageSize = searchParams.get("pageSize");
+  const search = searchParams.get("search") ?? "";
+  const index = parseInt(pageIndex) || 0;
+  const size = parseInt(pageSize) || null;
   try {
+    const regex = new RegExp(search, "i");
+
+    const match = {
+      $or: [{ passingYear: { $regex: regex } }],
+    };
+
     await connectDB();
     const batches = await batchModel
-      .find()
+      .find(match)
       .populate({
         path: "author",
         select: { name: true, _id: true, avatar: true },
       })
-      .sort({ passingYear: -1 });
+      .sort({ passingYear: -1 })
+      .skip(index * size)
+      .limit(size);
 
     const batchsWithStudents = await Promise.all(
       batches.map(async (batch) => {
@@ -30,7 +44,17 @@ export async function GET(req) {
       })
     );
 
-    return NextResponse.json({ batches: batchsWithStudents }, { status: 200 });
+    const total = await batchModel.countDocuments();
+
+    return NextResponse.json(
+      {
+        total,
+        pageCount: Math.ceil(total / size),
+        pageSize: size,
+        data: batchsWithStudents,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error({ batchesGetError: error });
     return NextResponse.json({ message: error.message }, { status: 500 });

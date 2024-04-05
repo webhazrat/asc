@@ -4,22 +4,53 @@ import connectDB from "@/lib/connect";
 import { checkAuthUser } from "@/lib/apiAuth";
 import { put } from "@vercel/blob";
 
-// get all events
+// dashboard/events
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
+  const pageIndex = searchParams.get("pageIndex");
+  const pageSize = searchParams.get("pageSize");
+  const search = searchParams.get("search") ?? "";
+  const index = parseInt(pageIndex) || 0;
+  const size = parseInt(pageSize) || 10;
+
   const status = searchParams.get("status");
-  const query = {};
-  if (status) query.status = status;
+
   try {
+    const regex = new RegExp(search, "i");
+    const match = {
+      $and: [
+        status ? { status: status } : {},
+        {
+          $or: [
+            { title: { $regex: regex } },
+            { description: { $regex: regex } },
+            { location: { $regex: regex } },
+            { status: { $regex: regex } },
+          ],
+        },
+      ],
+    };
+
     await connectDB();
     const events = await eventModel
-      .find(query)
+      .find(match)
       .populate({
         path: "author",
         select: { name: true, _id: true, avatar: true },
       })
-      .sort({ createdAt: -1 });
-    return NextResponse.json({ events }, { status: 200 });
+      .sort({ createdAt: -1 })
+      .skip(index * size)
+      .limit(size);
+    const total = await eventModel.countDocuments(match);
+    return NextResponse.json(
+      {
+        total,
+        pageCount: Math.ceil(total / size),
+        pageSize: size,
+        data: events,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error({ eventsGetError: error });
     return NextResponse.json({ message: error.message }, { status: 500 });

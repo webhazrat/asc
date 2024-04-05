@@ -261,9 +261,7 @@ export const teachersColumns = () => [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
+            <DropdownMenuItem onClick={alert("This feature is under develop")}>
               শিক্ষার্থী
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -453,7 +451,7 @@ export const eventsColumns = ({ role, setEventId, setEventData }) => [
                   আপডেট
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => navigator.clipboard.writeText(payment.id)}
+                  onClick={alert("This feature is under develop")}
                 >
                   আয় ব্যয়
                 </DropdownMenuItem>
@@ -597,7 +595,7 @@ export const participantsColumns = ({ role, setPartcipant }) => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          অবস্থা
+          স্ট্যাটাস
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -730,6 +728,21 @@ export const batchStudentsColumns = () => [
     },
   },
   {
+    accessorKey: "bloodGroup",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          রক্তের গ্রুপ
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "presentAddress",
     header: ({ column }) => {
       return (
@@ -745,6 +758,21 @@ export const batchStudentsColumns = () => [
     },
   },
   {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          স্ট্যাটাস
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: "createdAt",
     header: ({ column }) => {
       return (
@@ -753,7 +781,7 @@ export const batchStudentsColumns = () => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          যোগদানের তারিখ
+          তারিখ
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -776,9 +804,7 @@ export const batchStudentsColumns = () => [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
+            <DropdownMenuItem onClick={alert("This feature is under develop")}>
               বিস্তারিত
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -900,9 +926,7 @@ export const participationsColumns = () => [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
+            <DropdownMenuItem onClick={alert("This feature is under develop")}>
               বিস্তারিত
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -990,6 +1014,7 @@ export const studentsColumns = (setStudentData) => [
       );
     },
   },
+
   {
     accessorKey: "presentAddress",
     header: ({ column }) => {
@@ -1000,6 +1025,21 @@ export const studentsColumns = (setStudentData) => [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           বর্তমান ঠিকানা
+          <ChevronsUpDown size={12} className="ml-2" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "bloodGroup",
+    header: ({ column }) => {
+      return (
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          রক্তের গ্রুপ
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -1029,7 +1069,7 @@ export const studentsColumns = (setStudentData) => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          ভূমিকা
+          রোল
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -1044,7 +1084,7 @@ export const studentsColumns = (setStudentData) => [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          অবস্থা
+          স্ট্যাটাস
           <ChevronsUpDown size={12} className="ml-2" />
         </Button>
       );
@@ -1082,9 +1122,7 @@ export const studentsColumns = (setStudentData) => [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(student.id)}
-            >
+            <DropdownMenuItem onClick={alert("This feature is under develop")}>
               বিস্তারিত
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setStudentData(student)}>

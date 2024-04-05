@@ -15,11 +15,17 @@ import { SERVER_URL } from "@/lib/utils";
 import { mutate } from "swr";
 import { toast } from "../ui/use-toast";
 export default function PaymentForm({ eventId, participant, setIsOpen }) {
+  const feesData = participant.event?.fees.map((fee, index) => {
+    return {
+      category: fee.category,
+      amount: participant.fees[index]?.amount ?? "",
+    };
+  });
+
   const form = useForm({
     defaultValues: {
       name: participant.student?.name,
-      eventFees: participant.event?.fees,
-      fees: participant.fees,
+      fees: feesData,
     },
   });
 
@@ -91,7 +97,7 @@ export default function PaymentForm({ eventId, participant, setIsOpen }) {
               <div key={field.id} className="flex gap-2">
                 <FormField
                   control={control}
-                  name={`eventFees.${index}.category`}
+                  name={`fees.${index}.category`}
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormControl>

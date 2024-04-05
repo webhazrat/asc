@@ -4,37 +4,57 @@ import participationModel from "@/models/participationModel";
 import { checkAuthUser } from "@/lib/apiAuth";
 import eventModel from "@/models/eventModel";
 
-// get event wise participants
+// dashboard/events/[eventId]/participants
+// profile/events/[eventId]/participants
 export async function GET(req, { params: { eventId } }) {
   const { searchParams } = new URL(req.url);
   const role = searchParams.get("role");
+  const pageIndex = searchParams.get("pageIndex");
+  const pageSize = searchParams.get("pageSize");
+  const search = searchParams.get("search");
+  const index = parseInt(pageIndex) || 0;
+  const size = parseInt(pageSize) || 10;
 
   try {
     const user = await checkAuthUser();
 
-    let query = { event: eventId };
-    let match = {};
+    let sMatch = {};
     let limit = 3;
 
     if (user?.role?.includes("Admin") && role === "Admin") {
       console.log("Admin");
-      limit = null;
+      limit = size;
     }
 
     if (user?.role?.includes("Head") && role === "Head") {
       console.log("Head");
-      match = { passingYear: user.passingYear };
-      limit = null;
+      sMatch = { passingYear: user?.passingYear };
+      limit = size;
     }
+
+    const regex = new RegExp(search, "i");
+
+    const match = { event: eventId };
 
     await connectDB();
     let participants = await participationModel
-      .find(query)
+      .find(match)
       .populate([
         {
           path: "student",
-          match: match,
           select: { name: true, avatar: true, phone: true, passingYear: true },
+          match: {
+            $and: [
+              sMatch,
+              {
+                $or: [
+                  { name: { $regex: regex } },
+                  { phone: { $regex: regex } },
+                  { passingYear: { $regex: regex } },
+                ],
+              },
+            ],
+          },
         },
         {
           path: "event",
@@ -42,19 +62,22 @@ export async function GET(req, { params: { eventId } }) {
         },
       ])
       .sort({ createdAt: -1 })
-      .limit(limit);
+      .skip(index * size)
+      .limit(size);
 
     participants = participants.filter((participant) => participant.student);
 
     const event = await eventModel.findById(eventId).select("title date");
 
-    const totalCount = await participationModel.countDocuments(query);
+    const total = await participationModel.countDocuments(match);
 
     return NextResponse.json(
       {
         event,
-        totalCount,
-        participants,
+        total,
+        pageCount: Math.ceil(total / size),
+        pageSize: size,
+        data: participants,
       },
       {
         status: 200,

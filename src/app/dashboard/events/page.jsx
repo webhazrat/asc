@@ -7,13 +7,26 @@ import { eventsColumns } from "@/components/datatable/Columns";
 import { DataTable } from "@/components/datatable/DataTable";
 import { toast } from "@/components/ui/use-toast";
 import { SERVER_URL, fetcher } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import useSWR from "swr";
 
 export default function Page() {
   const [eventId, setEventId] = useState(false);
   const [eventData, setEventData] = useState(false);
-  const { data, isLoading, error, mutate } = useSWR("/api/events", fetcher);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const page = searchParams.get("page");
+  const [pagination, setPagination] = useState({
+    pageIndex: page ? page - 1 : 0,
+    pageSize: 10,
+  });
+  const [globalFilter, setGlobalFilter] = useState(search || "");
+
+  const { data, isLoading, error, mutate } = useSWR(
+    `/api/events?pageIndex=${pagination.pageIndex}&pageSize=${pagination.pageSize}&search=${globalFilter}`,
+    fetcher
+  );
 
   // delete an event
   const deleteEvent = async (id) => {
@@ -58,8 +71,12 @@ export default function Page() {
       />
       <DataTable
         columns={eventsColumns({ role: "Admin", setEventId, setEventData })}
-        data={data?.events}
+        data={data}
         isLoading={isLoading}
+        pagination={pagination}
+        setPagination={setPagination}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
       />
     </div>
   );

@@ -26,7 +26,8 @@ const messages = [
 ];
 
 export default function ParticipateAction({ eventId }) {
-  const { participations, isLoading } = useParticipations();
+  const { data, isLoading } = useParticipations(`/api/participations`);
+  const participations = data?.data;
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [confirm, setConfirm] = useState(false);

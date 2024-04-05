@@ -1,13 +1,7 @@
 "use client";
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -32,6 +26,7 @@ import {
 import { useState } from "react";
 import Pagination from "./Pagination";
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export function DataTable({
   isLoading,
@@ -44,29 +39,38 @@ export function DataTable({
   columnVisible,
 }) {
   const [sorting, setSorting] = useState([]);
-  const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-  const [rowSelection, setRowSelection] = useState({});
-  const [inputValue, setInputValue] = useState("");
+  const [term, setTerm] = useState("");
 
   const table = useReactTable({
-    data: data || [],
+    data: data?.data || [],
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    manualPagination: true,
+    onPaginationChange: setPagination,
+    pageCount: data?.pageCount ?? 0,
+    onGlobalFilterChange: setGlobalFilter,
+    manualFiltering: true,
+    rowCount: data?.total,
     state: {
       sorting,
-      columnFilters,
       columnVisibility: columnVisible,
-      rowSelection,
+      pagination: pagination,
+      globalFilter,
     },
   });
+
+  const debounce = useDebounce((term) => {
+    setGlobalFilter(term);
+  }, 1000);
+
+  const handleChange = (term) => {
+    setTerm(term);
+    debounce(term);
+  };
 
   return (
     <div className="w-full flex flex-col gap-3">
@@ -102,8 +106,8 @@ export function DataTable({
             type="text"
             placeholder="সার্চ করুন..."
             className="text-sm"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            value={term}
+            onChange={(e) => handleChange(e.target.value)}
           />
         </div>
       </div>

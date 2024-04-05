@@ -7,13 +7,25 @@ import { batchesColumns } from "@/components/datatable/Columns";
 import { DataTable } from "@/components/datatable/DataTable";
 import { toast } from "@/components/ui/use-toast";
 import { SERVER_URL, fetcher } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import useSWR from "swr";
 
 export default function Page() {
   const [batchId, setBatchId] = useState(false);
   const [batchData, setBatchData] = useState(false);
-  const { data, isLoading, error, mutate } = useSWR("/api/batches", fetcher);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const page = searchParams.get("page");
+  const [pagination, setPagination] = useState({
+    pageIndex: page ? page - 1 : 0,
+    pageSize: 10,
+  });
+  const [globalFilter, setGlobalFilter] = useState(search || "");
+  const { data, isLoading, error, mutate } = useSWR(
+    `/api/batches?pageIndex=${pagination.pageIndex}&pageSize=${pagination.pageSize}&search=${globalFilter}`,
+    fetcher
+  );
 
   // delete a batch
   const deleteBatch = async (id) => {
@@ -41,7 +53,7 @@ export default function Page() {
   };
 
   return (
-    <>
+    <div className="space-y-2">
       <Title title="ব্যাচসমূহ">
         <BatchModal isModalOpen={batchData} setIsModalOpen={setBatchData}>
           <BatchFrom setIsModalOpen={setBatchData} batch={batchData} />
@@ -57,9 +69,13 @@ export default function Page() {
       />
       <DataTable
         columns={batchesColumns(setBatchId, setBatchData)}
-        data={data?.batches}
+        data={data}
         isLoading={isLoading}
+        pagination={pagination}
+        setPagination={setPagination}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
       />
-    </>
+    </div>
   );
 }

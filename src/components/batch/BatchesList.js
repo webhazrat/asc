@@ -6,7 +6,7 @@ import BatchCardLoader from "../loader/BatchCardLoader";
 
 export default function BatchesList() {
   const { data, isLoading } = useSWR(`/api/batches`, fetcher);
-  const batches = data?.batches;
+  const batches = data?.data;
 
   let content = null;
   if (isLoading) {

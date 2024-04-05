@@ -2,15 +2,12 @@ import useSWR from "swr";
 import { useUser } from "./useUser";
 import { fetcher } from "@/lib/utils";
 
-export const useParticipations = () => {
+export const useParticipations = (url) => {
   const { user } = useUser();
-  const { data, isLoading, error } = useSWR(
-    user?._id ? `/api/participations` : null,
-    fetcher
-  );
+  const { data, isLoading, error } = useSWR(user?._id ? url : null, fetcher);
 
   return {
-    participations: data?.participations,
+    data,
     isLoading,
     error,
   };

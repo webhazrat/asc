@@ -5,7 +5,9 @@ import { fetcher } from "@/lib/utils";
 import useSWR from "swr";
 export default function EventsList() {
   const { data, isLoading } = useSWR(`/api/events`, fetcher);
-  const events = data?.events;
+  const events = data?.data;
+
+  console.log({ data });
 
   let content = null;
   if (isLoading) {
