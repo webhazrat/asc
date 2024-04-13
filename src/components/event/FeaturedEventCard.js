@@ -7,8 +7,10 @@ import { truncateString } from "@/lib/utils";
 import Thumbnail from "../common/Thumbnail";
 import ParticipateAction from "./ParticipateAction";
 import ParticipateAvatars from "./ParticipantsAvatars";
+import { useCountDownTimer } from "@/hooks/useCountDownTimer";
 
 export default function FeaturedEventCard({ event }) {
+  const { days, hours, minutes } = useCountDownTimer(event?.date);
   const feesDetail =
     event?.fees?.length > 0 &&
     event?.fees.map((fee) => `${fee.category} - ${fee.amount}`);
@@ -46,7 +48,9 @@ export default function FeaturedEventCard({ event }) {
         <p>{truncateString(event?.description, 274)}</p>
         <div className="flex flex-col lg:flex-row lg:items-center gap-5 justify-between">
           <div className="flex items-center">
-            <ParticipateAction eventId={event?._id} />
+            {days !== 0 && hours !== 0 && minutes !== 0 && (
+              <ParticipateAction eventId={event?._id} />
+            )}
             <Button variant="link" asChild>
               <Link href={`events/${event?.slug}`}>বিস্তারিত দেখুন</Link>
             </Button>
